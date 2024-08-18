@@ -39,6 +39,13 @@ async function getById(id) {
     return storageService.get(STORAGE_KEY, id)
 }
 
+async function changeIsReadById(id) {
+    
+    const email = storageService.get(STORAGE_KEY, id)
+    email.isRead = !email.isRead
+
+}
+
 async function remove(id) {
     return storageService.remove(STORAGE_KEY, id)
 }
@@ -81,13 +88,13 @@ function _createEmails() {
         },
         {
             id: utilService.makeId(), subject: "the email app has a bug!!!",
-            body: "Please fix it immediatly!!!", isRead: false, isStarred: false,
+            body: "Please fix it immediatly!!!", isRead: false, isStarred: true,
             sentAt: "July 9", removedAt: null, sender: {email: "AvinoamInc@gmail.com", name: "Avinoam"},
             receiver: " React managemant"
         },
         {
             id: utilService.makeId(), subject: "Bug fixed!",
-            body: "the app is back to normal!", isRead: false, isStarred: false,
+            body: "the app is back to normal!", isRead: true, isStarred: false,
             sentAt: "Jan 19", removedAt: null, sender: {email: "React managemant@gmail.com", name: "React managemant"},
             receiver: " AvinoamInc@gmail.com"
         }

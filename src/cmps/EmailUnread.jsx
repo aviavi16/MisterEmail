@@ -25,7 +25,6 @@ export function EmailUnread({isRead}){
         <section className="email-unread">
 
         <select  
-            value={isRead} 
             onChange={handleChange}
             id="isRead" 
             name="isRead" 
