@@ -1,28 +1,20 @@
 .app-header {
-    background: #e91e63;
+    background: lightblue;
     color: white;
-
-}
-
-.app-header section.container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
+
+
 }
 
-.app-header h1.logo {
-    flex-grow: 1;
-    font-weight: 600;
+.app-header nav{
+    display: flex;
+    align-items: center;  
+    gap: 1em;
 }
 
-.app-header .back {
-    flex-grow: 1;
-}
-
-.app-header nav a:not(:last-child) {
-    margin-right: 10px;
-}
-
-.app-header section.container>section {
-    flex-grow: 1;
+a.active{
+    color: darkslategray;
 }

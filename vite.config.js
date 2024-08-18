@@ -1,7 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import vue from '@vitejs/plugin-vue';
+import removeConsole from 'vite-plugin-remove-console';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  base: "/YOUR_REPOSITORY_NAME",
+  plugins: [
+    react(),
+    vue(),
+    removeConsole()
+  ],
 })
+
+
