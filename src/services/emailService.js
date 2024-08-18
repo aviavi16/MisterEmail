@@ -50,7 +50,7 @@ async function save(email) {
         storageService.post(storageService, email)
 }
 
-function createEmail(subject, body, sentAt, from, to) {
+function createEmail(subject, body, sentAt, receiver, sender) {
     return {
         id: utilService.makeId(),
         subject,
@@ -61,6 +61,8 @@ function createEmail(subject, body, sentAt, from, to) {
         removedAt: null, //for later use 
         sender,
         receiver
+        
+
     }
 }
 

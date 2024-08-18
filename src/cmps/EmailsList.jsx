@@ -8,14 +8,13 @@ export function EmailList({ emails , onRemove}) {
                     <input className="checkbox" title="Select" type="checkbox"/>    
                     <input className="star" title="Select" type="checkbox"/> 
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
-                   <div className="from-email"> { email.receiver.name } </div>
-                   <div className="email-subject">  {email.subject} </div>
+                   <div className="from-email"> { email.sender.name } </div>
+                   <Link to={`/email/${email.id}`}>  {email.subject} </Link> 
                    <div className="date"> {email.sentAt} </div>
                     
-                   <div> 
-                        <button onClick={() => onRemove(email.id)}> X </button>
-                        <Link to={`/email/${email.id}`}> Details </Link> 
-                    </div> 
+                   
+                    <button onClick={() => onRemove(email.id)}> X </button>
+                     
                 </div>)}
         </div>
     </section> 
