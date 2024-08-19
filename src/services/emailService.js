@@ -7,7 +7,8 @@ export const emailService = {
     remove,
     save,
     createEmail,
-    getDefaultFilter
+    getDefaultFilter,
+    changeIsReadById
 }
 
 const STORAGE_KEY = "emails"
@@ -39,10 +40,15 @@ async function getById(id) {
     return storageService.get(STORAGE_KEY, id)
 }
 
-async function changeIsReadById(id) {
+async function changeIsReadById(id, value) {
     
-    const email = storageService.get(STORAGE_KEY, id)
-    email.isRead = !email.isRead
+    const email = await storageService.get(STORAGE_KEY, id)
+    if (value)
+        email.isRead = value
+    else
+        email.isRead = !email.isRead
+    storageService.put(STORAGE_KEY, email)
+    return email
 
 }
 

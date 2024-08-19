@@ -4,8 +4,11 @@ import { AppFooter } from './cmps/AppFooter';
 import { AppHeader } from './cmps/AppHeader';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
+import { Settings } from './pages/Settings';
+
 import { EmailIndex } from './pages/EmailIndex';
 import { EmailDetails } from './cmps/EmailDetails';
+
 export function App() {
 
     return (
@@ -16,6 +19,7 @@ export function App() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/about' element={<About />} />
+                    <Route path='/settings' element={<Settings />} />
                     <Route path='/email' element={<EmailIndex />} />
                     <Route path='/email/:id' element={<EmailDetails />} />
                 </Routes>

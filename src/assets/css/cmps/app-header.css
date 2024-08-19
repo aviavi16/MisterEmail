@@ -4,6 +4,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 10vh;
 
 
 
@@ -18,3 +19,23 @@
 a.active{
     color: darkslategray;
 }
+
+.about-link , .home-link, .settings-link, .email-link{
+    width: 30px;
+    height: 30px;
+}
+
+.main-logo{
+    width: 40px;
+    height : 30px;
+}
+
+.title-container{
+    display: flex;
+    gap: 1em;
+    color: black;
+    font-family: Comic Sans MS;
+}
+
+
+
