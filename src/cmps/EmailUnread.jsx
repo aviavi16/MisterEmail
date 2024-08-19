@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import downIcon from "../assets/imgs/down-arrow.png"
 
 export function EmailUnread({isRead}){
     const [filterByUnread, setFilterByUnread] = useState(null)
@@ -32,6 +33,9 @@ export function EmailUnread({isRead}){
 
 
         </select>
+        <div className="icon-container">
+            <img src={downIcon} />
+        </div>
         </section>
     )
 }
