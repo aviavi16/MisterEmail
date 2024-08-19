@@ -13,6 +13,7 @@
 @import "./cmps/app-header.css";
 @import "./cmps/app-footer.css";
 @import "./cmps/email-list.css";
+@import "./cmps/email-details.css";
 @import "./cmps/email-filter.css";
 @import "./cmps/email-unread.css";
 @import "./cmps/email-preview.css";
