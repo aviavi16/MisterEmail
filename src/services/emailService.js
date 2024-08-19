@@ -7,8 +7,7 @@ export const emailService = {
     remove,
     save,
     createEmail,
-    getDefaultFilter,
-    changeIsReadById
+    getDefaultFilter
 }
 
 const STORAGE_KEY = "emails"
@@ -20,14 +19,14 @@ async function query(filterBy, isRead) {
     
     if (filterBy) {
 
-        let { subject, receiver, sender } = filterBy
+        let {search} = filterBy
         emails = emails.filter(email => 
-            email.subject.toLowerCase().includes(subject.toLowerCase())
-            && (email.sender.email.toLowerCase().includes(sender.toLowerCase()))
-            && (email.receiver.toLowerCase().includes(receiver.toLowerCase()))
+            email.subject.toLowerCase().includes(search.toLowerCase())
+            || (email.sender.email.toLowerCase().includes(search.toLowerCase()))
+            || (email.receiver.toLowerCase().includes(search.toLowerCase()))
         )
     }
-    if(isRead){
+    if(isRead != null){
         emails = emails.filter(email => 
             email.isRead === isRead
         )
@@ -38,18 +37,6 @@ async function query(filterBy, isRead) {
 
 async function getById(id) {
     return storageService.get(STORAGE_KEY, id)
-}
-
-async function changeIsReadById(id, value) {
-    
-    const email = await storageService.get(STORAGE_KEY, id)
-    if (value)
-        email.isRead = value
-    else
-        email.isRead = !email.isRead
-    storageService.put(STORAGE_KEY, email)
-    return email
-
 }
 
 async function remove(id) {
@@ -112,9 +99,7 @@ function _createEmails() {
 
 function getDefaultFilter(){
     return {
-        subject: "",
-        sender: "",
-        receiver: ""
+        search: ''
     }
 }
 

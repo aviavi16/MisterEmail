@@ -3,47 +3,59 @@ import { Link } from "react-router-dom"
 import { emailService } from "../services/emailService"
 import  deleteIcon  from "../assets/imgs/delete.png"
 import unreadIcon  from "../assets/imgs/unread-message.png"
+import fullStarIcon  from "../assets/imgs/full-star.png"
+import emptyStarIcon  from "../assets/imgs/empty-star.png"
 
-export function EmailPreview({email , onRemove }){
-    const [emailPreview, setEmailPreview] = useState(email)
-    const [isDark, setIsDark] = useState(email.isRead)
+export function EmailPreview({email , onRemove, onEmailPreviewChange }){
+    const [isRead, setIsRead] = useState(email.isRead)
+    const [isStar, setIsStar] = useState(email.isStar)
 
-    useEffect(() =>{
-        setEmailPreview(emailPreview)
-    }, [isDark])
-
-    async function toggleUnread(id, value){
-        var email = await emailService.changeIsReadById(id, value)
-        console.log('handleChange email:', email)
-        rowStyle()
-        setIsDark(isDark => isDark = email.isRead)
-        console.log('handleChange isDark:', isDark)
+    async function toggleUnread(){
+        email.isRead = !email.isRead
+        await emailService.save(email)
+        setIsRead(isRead => !isRead )
     }
 
     function rowStyle(){
         var classList = ["email-preview"]
-        if(isDark)
+        if(isRead)
             classList.push("dark")
         return classList.join(" ")
     }
 
+    function getStar(){
+        if(isStar)
+            return fullStarIcon
+        else
+            return emptyStarIcon
+    }
+
+    async function switchStarState(){
+        email.isRead = !email.isRead
+        await emailService.save(email)
+        setIsStar(isStar => !isStar)
+    }
+
     return(
         <section className={rowStyle()}>
-                    <input className="checkbox" title="Select" type="checkbox" />    
-                    <input className="star" title="Select" type="checkbox" /> 
+                    <input className="checkbox" title="Select" type="checkbox" />   
+                    <div className="star-container">
+                        <img src={getStar()} id="imgClickAndChange" onClick={() => switchStarState()}/>
+                    </div> 
+                   
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
-                   <div className="from-email"> { emailPreview.sender.name } </div>
-                   <Link to={`/email/${emailPreview.id}`}>  {emailPreview.subject} </Link> 
+                   <div className="from-email"> { email.sender.name } </div>
+                   <Link to={`/email/${email.id}`}>  {email.subject} </Link> 
                    <div className="date"> 
-                        {emailPreview.sentAt} 
+                        {email.sentAt} 
                         <div className="action-btn">
                             <img className= "hide" src= {deleteIcon} onClick={() => onRemove(email.id)}/>
-                            <img className= "hide" src= {unreadIcon} onClick={() => toggleUnread(email.id, false)}/>
+                            <img className= "hide" src= {unreadIcon} onClick={toggleUnread}/>
                         </div>
                     </div>  
-                   <div className="test-btn">
-                        <button onClick={() => onRemove(email.id)}> X </button> 
-                        <button onClick={() => toggleUnread(email.id)}> Read/Unread </button>             
+                   <div className="extra-action-btn">
+                        <button onClick={() => toggleUnread(email.id)} className="is-read-btn"> Read/Unread </button>             
+                        <button onClick={() => onRemove(email.id)} className="remove-btn"> X </button> 
                    </div>
                           
         </section>

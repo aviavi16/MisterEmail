@@ -1,0 +1,9 @@
+.search-link{
+    width: 10px;
+    height: 10px;
+}
+
+.email-filter{
+    display: flex;
+    margin-block-start: 20px;
+}

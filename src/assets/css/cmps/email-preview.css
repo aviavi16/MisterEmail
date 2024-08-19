@@ -8,30 +8,16 @@
     cursor:pointer;
     justify-content: start;
     align-items: center;
+    color: darkblue;
+    font-weight: bold;
+    font-family: monospace;
 
 }
 
 .email-preview.dark{
-    background-color: rgb(11, 52, 105);
-    color: white;
+    background-color:lightslategray;
+    color: beige;
     cursor:pointer;
-}
-
- 
-.star {
-    visibility:hidden;
-    font-size:30px;
-    cursor:pointer;
-}
-.star:before {
-
-   content: "\2606";
-   visibility:visible;
-}
-.star:checked:before {
-
-   content: "\2603";
-   background-color: yellow;
 }
 
 .checkbox{
@@ -52,7 +38,7 @@
     
 }
 
-.hide {
+.date .hide {
     display: none;
     width: 20px;
     height: 20px;
@@ -60,6 +46,29 @@
 
 .action-btn{
     display: flex;
+    background-color: white;
 }
 
+.extra-action-btn{
+    display: flex;
+    gap: 1em;
+}
+
+.remove-btn{
+    background-color: red;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.is-read-btn{
+    background-color: lightcyan;
+    font-family: Comic Sans MS;
+
+}
+
+.full-star{
+    display: none;
+    width: 20px;
+    height: 20px;
+}
   

@@ -18,8 +18,6 @@ export function EmailIndex() {
     async function loadEmails() {
         try {
             const emails = await emailService.query(filterBy, filterRead)
-            console.log('load emails:', emails)
-
             setEmails(emails)
         } catch (err) {
             console.log('err:', err)
@@ -28,9 +26,10 @@ export function EmailIndex() {
 
     }
 
-    async function removeEmail(emailId) {
-        console.log('removint the emailId:', emailId)
+    async function removeEmail(emailId) { 
         try {
+            if (!confirm('Are you sure?')) return
+            console.log('removing the emailId:', emailId)
             await emailService.remove(emailId)
             setEmails(emails => emails.filter(email => email.id !== emailId))
         } catch (err) {
@@ -51,7 +50,6 @@ export function EmailIndex() {
 
     function isReadFunc(filterRead){
         try {
-            console.log('isReadFunc filterRead:', filterRead)
             setFilterRead(filterRead)
         } catch (err) {
             console.log('err:', err)
@@ -63,7 +61,6 @@ export function EmailIndex() {
     if (!emails) return <span> email page loading.. </span>
     return (
         <section className="email-index">
-            <span> email page: </span>
             <EmailUnread isRead={isReadFunc} />
             <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
             <EmailList emails={emails} onRemove={removeEmail} onReadChange = {loadEmails} />
