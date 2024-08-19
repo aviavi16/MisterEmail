@@ -10,6 +10,10 @@ export function EmailPreview({email , onRemove, onEmailPreviewChange }){
     const [isRead, setIsRead] = useState(email.isRead)
     const [isStar, setIsStar] = useState(email.isStar)
 
+    useEffect (() => {
+        onEmailPreviewChange(true)
+        console.log('useEffect: entered the useeffect')
+    }, [isRead, isStar])
     async function toggleUnread(){
         email.isRead = !email.isRead
         await emailService.save(email)

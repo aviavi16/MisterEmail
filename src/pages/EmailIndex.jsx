@@ -39,6 +39,17 @@ export function EmailIndex() {
 
     }
 
+    function previewLoad(isChanged){
+        try{
+            console.log(' previewLoad isChanged:', isChanged)
+            loadEmails();
+        } catch (err) {
+            console.log('err:', err)
+            alert("could not remove email")
+        }
+
+    }
+
     function filterByFunc(filterBy){
         try {
             setFilterBy(filterBy)
@@ -63,7 +74,7 @@ export function EmailIndex() {
         <section className="email-index">
             <EmailUnread isRead={isReadFunc} />
             <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
-            <EmailList emails={emails} onRemove={removeEmail} onReadChange = {loadEmails} />
+            <EmailList emails= {emails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad} />
         </section>
     )
 }
