@@ -24,7 +24,7 @@ export function EmailUnread({isRead}){
 
         <select  
             onChange={handleChange}
-            id="isRead" 
+            className="select-box"
         >  
         <option value="All">All </option>
         <option value="Unread">Unread</option>

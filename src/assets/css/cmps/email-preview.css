@@ -15,9 +15,9 @@
 }
 
 .email-preview.dark{
-    background-color:lightslategray;
-    color: beige;
-    cursor:pointer;
+    background-color: lightgoldenrodyellow;
+    color: cadetblue;
+    cursor: pointer;
 }
 
 .checkbox{

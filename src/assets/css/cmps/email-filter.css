@@ -1,9 +1,15 @@
 .search-link{
     width: 10px;
     height: 10px;
+
 }
 
 .email-filter{
     display: flex;
     margin-block-start: 20px;
+    background-color: lightgray;
+    justify-content: left;
+    align-items: center;
+    gap: 0.5em;
+    margin-left: 15px;
 }
