@@ -106,8 +106,10 @@ export function EmailIndex() {
 
     }
 
-    function isReadPreviewFunc(isReadPreviewVar){
+    async function isReadPreviewFunc(isReadPreviewVar){
         try {
+            isReadPreviewVar.isRead = !isReadPreviewVar.isRead
+            await emailService.save(isReadPreviewVar)
             setIsRead(isReadPreviewVar)
         } catch (err) {
             console.log('err:', err)
@@ -125,8 +127,7 @@ export function EmailIndex() {
         document.querySelector('.modal').style.display='none'
     }
 
-    if (!emails) return <span> email page loading.. </span>
-    if (!unreadEmails) return <span> email page loading.. </span>
+    if (!emails || !unreadEmails) return <span> email page loading.. </span>
 
     return (
         <section className="email-index">

@@ -18,7 +18,6 @@ async function query(filterBy, isRead) {
     let emails = await storageService.query(STORAGE_KEY)
     
     if (filterBy) {
-
         let {search} = filterBy
         emails = emails.filter(email => 
             email.subject.toLowerCase().includes(search.toLowerCase())

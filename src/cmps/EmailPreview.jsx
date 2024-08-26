@@ -7,7 +7,7 @@ import fullStarIcon  from "../assets/imgs/full-star.png"
 import emptyStarIcon  from "../assets/imgs/empty-star.png"
 
 export function EmailPreview({email , onRemove, onRead }){
-    const [isRead, setIsRead] = useState(email.isRead)
+    const [isRead, setIsRead] = useState(email)
     const [isStar, setIsStar] = useState(email.isStar)
     
     useEffect (() => {
@@ -15,10 +15,8 @@ export function EmailPreview({email , onRemove, onRead }){
         onRead(isRead)
     }, [isRead])
 
-    async function toggleUnread(){
-        email.isRead = !email.isRead
-        await emailService.save(email)
-        setIsRead(isRead => !isRead )
+    async function toggleUnread(email){
+        setIsRead(email )
     }
 
     function rowStyle(){
@@ -58,11 +56,11 @@ export function EmailPreview({email , onRemove, onRead }){
                         <span className="date">{email.sentAt} </span>
                         <div className="action-btn">
                             <img className= "hide" src= {deleteIcon} onClick={() => onRemove(email.id)}/>
-                            <img className= "hide" src= {unreadIcon} onClick={toggleUnread}/>
+                            <img className= "hide" src= {unreadIcon} onClick={() => toggleUnread(email)}/>
                         </div>
                     </div>  
                    <div className="extra-action-btn">
-                        <button onClick={() => toggleUnread(email.id)} className="is-read-btn"> Read/Unread </button>             
+                        <button onClick={() => toggleUnread(email)} className="is-read-btn"> Read/Unread </button>             
                         <button onClick={() => onRemove(email.id)} className="remove-btn"> X </button> 
                    </div>
                           
