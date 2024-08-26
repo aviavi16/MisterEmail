@@ -1,5 +1,8 @@
 export function About(){
     return (
-        <span> about page </span>
+        <section className="about-container">
+            <span> about page </span>
+        </section>
+        
     )
 }
