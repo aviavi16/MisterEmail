@@ -1,7 +1,7 @@
 .email-index{
    display: grid;
    grid-template-columns: 1fr 8fr;
-   grid-template-rows: 0.5fr 0.5fr 6fr;
+   grid-template-rows: 0.5fr 6fr;
    background-color: lightblue;
 
 }
@@ -42,7 +42,7 @@
     }
 }
 .list-container{
-    grid-area: 3 / 2;
+    grid-area: 2 / 2;
     padding: 10px;
     min-height: 60vh;
     background-color: white;
@@ -51,11 +51,7 @@
 .search-container{
     grid-area: 1 / 2/ span 1 /span 2;
 }
-.filter-container{
-    margin-block-start: 10px;
-    padding-inline: 10px;
-    grid-area: 2 / 2/ span 1;
-}
+
 .compose-container{
     grid-area: 1/1;
     display: flex;

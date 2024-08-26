@@ -1,38 +1,36 @@
 import { useEffect, useState } from "react"
 import downIcon from "../assets/imgs/down-arrow.png"
 
-export function EmailUnread({isRead}){
-    const [filterByUnread, setFilterByUnread] = useState(null)
+export function EmailUnread({intialIsRead, isShowRead}){
+    const [showUnread, setShowUnread] = useState(intialIsRead)
 
     useEffect(() =>{
-        isRead(filterByUnread)
-    }, [filterByUnread])
+        console.log(' useEffect intialIsRead: showUnread:', intialIsRead, showUnread)
+        isShowRead(showUnread)
+    }, [showUnread])
 
-    function handleChange({target}){
-        const name = target.value
-
-        if (target.value === "Unread") 
-            setFilterByUnread(false )
-        if (target.value === "Read") 
-            setFilterByUnread(true )
-        if (target.value === "All") 
-            setFilterByUnread( null )
+    function toggleUnread(){
+        setShowUnread(showUnread => !showUnread)
 
     }
 
+    function intialText(intialIsRead){
+        if(intialIsRead)
+            return 'Everything Else'
+        else
+            return 'Unread'
+    }
     return(
         <section className="email-unread">
-
-        <select  
-            onChange={handleChange}
-            className="select-box"
+        
+        <button  
+            onClick={toggleUnread}
+            className="toggle-btn"
         >  
-        <option value="All">All </option>
-        <option value="Unread">Unread</option>
-        <option value="Read">Read</option>
+        {intialText(intialIsRead)}
 
 
-        </select>
+        </button>
         <div className="icon-container">
             <img src={downIcon} />
         </div>

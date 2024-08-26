@@ -1,15 +1,17 @@
 .email-unread{
     display: flex;
     position: relative;
-    width: 100px;
+    width: fit-content;
     height: 20px;
 }
 
-.select-box{
+.toggle-btn{
+    display: flex;
+    margin-inline-start: 10px;
     border: none;
     appearance: none;
     padding: 0 30px 0 15px;
-    width: 100%;
+    width: fit-content;
     color: white;
     background-color: #80acff;
     font-size: 15px;
@@ -20,9 +22,9 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     position: absolute;
-    right: 0;
+    left: 0%;
     pointer-events: none;
 }
 

@@ -10,21 +10,52 @@ import composeLogo from "../assets/imgs/compose.png"
 
 export function EmailIndex() {
     const [emails, setEmails] = useState(null)
+    const [unreadEmails, setUnreadEmails] = useState(null)
+
     const defaultFilter = emailService.getDefaultFilter()
+
     const [filterBy, setFilterBy] = useState(defaultFilter)
-    const [filterRead, setFilterRead] = useState(false)
+    const [filterRead, setFilterRead] = useState(true)
+    const [filterUnread, setFilterUnread] = useState(false)
+
 
     useEffect(() => {
         loadEmails()
-    }, [filterBy, filterRead])
+    }, [filterRead])
+
+    useEffect(() => {
+        loadUnreadEmails()
+    }, [ filterUnread])
+
 
     async function loadEmails() {
         try {
+            if(filterRead === false) {
+                const emails =[]
+                setEmails(emails)
+                return            
+            }
             const emails = await emailService.query(filterBy, filterRead)
             setEmails(emails)
         } catch (err) {
             console.log('err:', err)
             alert("problem loading emails")
+        }
+
+    }
+
+    async function loadUnreadEmails() {
+        try {
+            if(filterUnread === true) {
+                const unreadEmails =[]
+                setUnreadEmails(unreadEmails)
+                return            
+            }
+            const unreadEmails = await emailService.query(filterBy, filterUnread)
+            setUnreadEmails(unreadEmails)
+        } catch (err) {
+            console.log('err:', err)
+            alert("problem loading unread emails")
         }
 
     }
@@ -44,7 +75,6 @@ export function EmailIndex() {
 
     function previewLoad(isChanged){
         try{
-            console.log(' previewLoad isChanged:', isChanged)
             loadEmails();
         } catch (err) {
             console.log('err:', err)
@@ -62,9 +92,9 @@ export function EmailIndex() {
         }
     }
 
-    function isReadFunc(filterRead){
+    function isUnreadFunc(isUnreadVar){
         try {
-            setFilterRead(filterRead)
+            setFilterUnread(isUnreadVar)
         } catch (err) {
             console.log('err:', err)
             alert("could not open unread emails")
@@ -72,10 +102,18 @@ export function EmailIndex() {
 
     }
 
+    function isReadFunc(isReadVar){
+        try {
+            setFilterRead(isReadVar)
+        } catch (err) {
+            console.log('err:', err)
+            alert("could not open else emails")
+        }
+
+    }
+
     function onOpenModal(){
         const elName = document.querySelector('.modal')
-           // elName.querySelector('h5').innerText = place.lat   
-            //elName.querySelector('h5').innerText = place.lng     
             elName.style.display='block'
     }
 
@@ -84,17 +122,26 @@ export function EmailIndex() {
     }
 
     if (!emails) return <span> email page loading.. </span>
+    if (!unreadEmails) return <span> email page loading.. </span>
+
     return (
         <section className="email-index">
             <div className="search-container">
                 <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
             </div>
-            <div className="filter-container">
-                <EmailUnread isRead={isReadFunc} />
-            </div>
             <div className="list-container">
+                <div className="filter-container">
+                    <EmailUnread intialIsRead={false} isShowRead={isUnreadFunc} />
+                </div>
+                <EmailList emails= {unreadEmails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad}/>
+                <div className="filter-container">
+                    <EmailUnread intialIsRead={true} isShowRead={isReadFunc} />
+                </div>
                 <EmailList emails= {emails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad} />
+                
             </div>
+
+            
             <div className="compose-container" onClick={onOpenModal}>
                 <img src={composeLogo} />
                 <span className="show-container"> Compose </span>         
@@ -105,21 +152,24 @@ export function EmailIndex() {
             {/* <div className="image-container">
                 <img src={backgroundLogo}/>
             </div> */}
-            <div id="myModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
+
+
+            <div id="myModal" className="modal">
+                <div className="modal-content">
+                    <div className="modal-header">
                     <button onClick={onCloseModal}>Close</button>
                     <h2>Modal Header</h2>
                     </div>
-                    <div class="modal-body">
+                    <div className="modal-body">
                     <p>Some text in the Modal Body</p>
                     <p>Some other text...</p>
                     </div>
-                    <div class="modal-footer">
+                    <div className="modal-footer">
                     <h3>Modal Footer</h3>
                     </div>
                 </div>
-            </div>       
+            </div>
+                   
         </section>
     )
 }
