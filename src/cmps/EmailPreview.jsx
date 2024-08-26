@@ -6,14 +6,15 @@ import unreadIcon  from "../assets/imgs/unread-message.png"
 import fullStarIcon  from "../assets/imgs/full-star.png"
 import emptyStarIcon  from "../assets/imgs/empty-star.png"
 
-export function EmailPreview({email , onRemove, onEmailPreviewChange }){
+export function EmailPreview({email , onRemove, onRead }){
     const [isRead, setIsRead] = useState(email.isRead)
     const [isStar, setIsStar] = useState(email.isStar)
-
+    
     useEffect (() => {
-        onEmailPreviewChange(true)
-        console.log('useEffect: entered the useeffect')
-    }, [isRead, isStar])
+        console.log('useEffect isRead:', isRead)
+        onRead(isRead)
+    }, [isRead])
+
     async function toggleUnread(){
         email.isRead = !email.isRead
         await emailService.save(email)

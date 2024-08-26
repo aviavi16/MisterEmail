@@ -18,10 +18,13 @@ export function EmailIndex() {
     const [filterRead, setFilterRead] = useState(true)
     const [filterUnread, setFilterUnread] = useState(false)
 
+    const [isRead, setIsRead] = useState(null)
+
 
     useEffect(() => {
+        console.log('herer:', filterRead, isRead )
         loadEmails()
-    }, [filterRead])
+    }, [filterRead, isRead])
 
     useEffect(() => {
         loadUnreadEmails()
@@ -30,12 +33,13 @@ export function EmailIndex() {
 
     async function loadEmails() {
         try {
-            if(filterRead === false) {
+            if(!filterRead && filterRead === false) {
                 const emails =[]
                 setEmails(emails)
                 return            
             }
             const emails = await emailService.query(filterBy, filterRead)
+            console.log('after read is changed emails:', emails)
             setEmails(emails)
         } catch (err) {
             console.log('err:', err)
@@ -73,16 +77,6 @@ export function EmailIndex() {
 
     }
 
-    function previewLoad(isChanged){
-        try{
-            loadEmails();
-        } catch (err) {
-            console.log('err:', err)
-            alert("could not remove email")
-        }
-
-    }
-
     function filterByFunc(filterBy){
         try {
             setFilterBy(filterBy)
@@ -112,6 +106,16 @@ export function EmailIndex() {
 
     }
 
+    function isReadPreviewFunc(isReadPreviewVar){
+        try {
+            setIsRead(isReadPreviewVar)
+        } catch (err) {
+            console.log('err:', err)
+            alert("could not change unread emails display")
+        }
+
+    }
+
     function onOpenModal(){
         const elName = document.querySelector('.modal')
             elName.style.display='block'
@@ -131,13 +135,13 @@ export function EmailIndex() {
             </div>
             <div className="list-container">
                 <div className="filter-container">
-                    <EmailUnread intialIsRead={false} isShowRead={isUnreadFunc} />
+                    <EmailUnread intialIsRead={false} isShowRead={isUnreadFunc}/>
                 </div>
-                <EmailList emails= {unreadEmails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad}/>
+                <EmailList emails= {unreadEmails} onRemove= {removeEmail} onRead={isReadPreviewFunc}/>
                 <div className="filter-container">
-                    <EmailUnread intialIsRead={true} isShowRead={isReadFunc} />
+                    <EmailUnread intialIsRead={true}  isShowRead={isReadFunc}/>
                 </div>
-                <EmailList emails= {emails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad} />
+                <EmailList emails= {emails} onRemove= {removeEmail} onRead={isReadPreviewFunc}/>
                 
             </div>
 
