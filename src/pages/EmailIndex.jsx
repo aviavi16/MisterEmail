@@ -3,72 +3,28 @@ import { emailService } from "../services/emailService"
 import { EmailList } from "../cmps/EmailsList"
 import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailUnread } from "../cmps/EmailUnread"
+import { SideBar } from "../cmps/SideBar"
+import backgroundLogo from "../assets/imgs/background3.jpg"
+import composeLogo from "../assets/imgs/compose.png"
 
 
 export function EmailIndex() {
     const [emails, setEmails] = useState(null)
-    const [unreadEmails, setUnreadEmails] = useState(null)
-
     const defaultFilter = emailService.getDefaultFilter()
-
     const [filterBy, setFilterBy] = useState(defaultFilter)
-    const [showRead, setShowRead] = useState(true)
-    const [showUnread, setShowUnread] = useState(true)
-
-    const [isRead, setIsRead] = useState(null)
-    const [isUnread, setIsUnread] = useState(null)
-
-
+    const [filterRead, setFilterRead] = useState(false)
 
     useEffect(() => {
         loadEmails()
-    }, [showRead])
-
-    useEffect(() => {
-        loadEmails()
-    }, [isRead])
-
-
-    useEffect(() => {
-        loadUnreadEmails()
-    }, [ showUnread])
-
-    useEffect(() => {
-        loadUnreadEmails()
-    }, [ isUnread])
-
+    }, [filterBy, filterRead])
 
     async function loadEmails() {
         try {
-            if(showRead === false) {
-                const emails =[]
-                setEmails(emails)
-                return            
-            }
-            const emails = await emailService.query(filterBy, true)
-            console.log('Email index loadEmails after read is changed emails:', emails)
+            const emails = await emailService.query(filterBy, filterRead)
             setEmails(emails)
         } catch (err) {
             console.log('err:', err)
             alert("problem loading emails")
-        }
-
-    }
-
-    async function loadUnreadEmails() {
-        try {
-            if(showUnread === false) {
-                const unreadEmails =[]
-                setUnreadEmails(unreadEmails)
-                return            
-            }
-            const unreadEmails = await emailService.query(filterBy, false)
-            console.log('Email index loadUnreadEmails after read is changed emails:', unreadEmails)
-
-            setUnreadEmails(unreadEmails)
-        } catch (err) {
-            console.log('err:', err)
-            alert("problem loading unread emails")
         }
 
     }
@@ -86,12 +42,10 @@ export function EmailIndex() {
 
     }
 
-    async function removeUnreadEmail(emailId) { 
-        try {
-            if (!confirm('Are you sure?')) return
-            console.log('removing the emailId:', emailId)
-            await emailService.remove(emailId)
-            setEmails(emails => emails.filter(email => email.id !== emailId))
+    function previewLoad(isChanged){
+        try{
+            console.log(' previewLoad isChanged:', isChanged)
+            loadEmails();
         } catch (err) {
             console.log('err:', err)
             alert("could not remove email")
@@ -108,9 +62,9 @@ export function EmailIndex() {
         }
     }
 
-    function isShowUnreadFunc(isShowUnreadVar){
+    function isReadFunc(filterRead){
         try {
-            setShowUnread(isShowUnreadVar)
+            setFilterRead(filterRead)
         } catch (err) {
             console.log('err:', err)
             alert("could not open unread emails")
@@ -118,12 +72,54 @@ export function EmailIndex() {
 
     }
 
+    function onOpenModal(){
+        const elName = document.querySelector('.modal')
+           // elName.querySelector('h5').innerText = place.lat   
+            //elName.querySelector('h5').innerText = place.lng     
+            elName.style.display='block'
+    }
+
+    function onCloseModal() {
+        document.querySelector('.modal').style.display='none'
+    }
+
     if (!emails) return <span> email page loading.. </span>
     return (
         <section className="email-index">
-            <EmailUnread isRead={isReadFunc} />
-            <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
-            <EmailList emails= {emails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad} />
+            <div className="search-container">
+                <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
+            </div>
+            <div className="filter-container">
+                <EmailUnread isRead={isReadFunc} />
+            </div>
+            <div className="list-container">
+                <EmailList emails= {emails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad} />
+            </div>
+            <div className="compose-container" onClick={onOpenModal}>
+                <img src={composeLogo} />
+                <span className="show-container"> Compose </span>         
+            </div>
+            <div className="sidebar-container">
+                <SideBar />
+            </div>
+            {/* <div className="image-container">
+                <img src={backgroundLogo}/>
+            </div> */}
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button onClick={onCloseModal}>Close</button>
+                    <h2>Modal Header</h2>
+                    </div>
+                    <div class="modal-body">
+                    <p>Some text in the Modal Body</p>
+                    <p>Some other text...</p>
+                    </div>
+                    <div class="modal-footer">
+                    <h3>Modal Footer</h3>
+                    </div>
+                </div>
+            </div>       
         </section>
     )
 }
