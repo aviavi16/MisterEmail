@@ -1,17 +1,17 @@
 .email-preview{
     display: grid;
-    grid-template-columns: repeat(2,0.1fr) 0.7fr 4fr 0.7fr 0.5fr;
-    grid-template-rows: 35px;
+    grid-template-columns: repeat(2,20px) minmax(35px,120px) 200px 100px 100px;
+    grid-auto-rows: minmax(35px,auto);
     gap: 15px;
     background-color: white;
+    overflow-wrap: break-word;
     cursor:pointer;
     justify-content: start;
     align-items: center;
     color: darkblue;
     font-weight: bold;
     font-family: monospace;
-    border-bottom: 0.1px solid rgb(149, 193, 223);
-    padding-inline: 10px;
+
 }
 
 .email-preview.dark{
@@ -28,20 +28,17 @@
     cursor:pointer;
 }
 
-.date-container{
+.date{
     display: grid;
     justify-content: end;
 }
 
 .email-preview:hover .hide {
     display: grid;
+    
 }
 
-.email-preview:hover .date {
-    display: none;
-}
-
-.date-container .hide {
+.date .hide {
     display: none;
     width: 20px;
     height: 20px;
@@ -49,13 +46,12 @@
 
 .action-btn{
     display: flex;
-    gap: 1em;
+    background-color: white;
 }
 
 .extra-action-btn{
     display: flex;
     gap: 1em;
-    max-height: 20px;
 }
 
 .remove-btn{
@@ -75,11 +71,4 @@
     width: 20px;
     height: 20px;
 }
-.from-email{
-    overflow: hidden;
-    overflow-y: hidden;
-}
-.body-container{
-
-    overflow: hidden;
-}
+  

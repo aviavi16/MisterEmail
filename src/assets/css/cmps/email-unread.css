@@ -1,5 +1,6 @@
 .email-unread{
     display: flex;
+    margin-left: 15px;
     position: relative;
     width: fit-content;
     height: 20px;

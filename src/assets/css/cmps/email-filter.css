@@ -1,22 +1,14 @@
 .search-link{
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
 
 }
 
 .email-filter{
     display: flex;
-    flex-wrap: wrap;
+    margin-block-start: 20px;
     background-color: lightgray;
-    justify-content: flex-start;
-    img{
-        justify-items: center;
-        margin-inline: 10px;
-
-    }
-}
-.search-container{
-    display: flex;
+    justify-content: left;
     align-items: center;
     background-color: lightgray;
     

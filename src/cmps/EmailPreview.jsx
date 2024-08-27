@@ -48,12 +48,9 @@ export function EmailPreview({email , onRemove, onRead }){
                    
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
                    <div className="from-email"> { email.sender.name } </div>
-                   <Link to={`/email/${email.id}`} className="details-container">
-                         <span className="subject-container"> {email.subject}- </span>
-                         <span className="body-container"> {email.body} </span>
-                    </Link> 
-                   <div className="date-container"> 
-                        <span className="date">{email.sentAt} </span>
+                   <Link to={`/email/${email.id}`}>  {email.subject} </Link> 
+                   <div className="date"> 
+                        {email.sentAt} 
                         <div className="action-btn">
                             <img className= "hide" src= {deleteIcon} onClick={() => onRemove(email.id)}/>
                             <img className= "hide" src= {unreadIcon} onClick={() => toggleUnread(email)}/>
