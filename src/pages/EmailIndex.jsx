@@ -15,31 +15,41 @@ export function EmailIndex() {
     const defaultFilter = emailService.getDefaultFilter()
 
     const [filterBy, setFilterBy] = useState(defaultFilter)
-    const [filterRead, setFilterRead] = useState(true)
-    const [filterUnread, setFilterUnread] = useState(false)
+    const [showRead, setShowRead] = useState(true)
+    const [showUnread, setShowUnread] = useState(true)
 
     const [isRead, setIsRead] = useState(null)
+    const [isUnread, setIsUnread] = useState(null)
+
 
 
     useEffect(() => {
-        console.log('herer:', filterRead, isRead )
         loadEmails()
-    }, [filterRead, isRead])
+    }, [showRead])
+
+    useEffect(() => {
+        loadEmails()
+    }, [isRead])
+
 
     useEffect(() => {
         loadUnreadEmails()
-    }, [ filterUnread])
+    }, [ showUnread])
+
+    useEffect(() => {
+        loadUnreadEmails()
+    }, [ isUnread])
 
 
     async function loadEmails() {
         try {
-            if(!filterRead && filterRead === false) {
+            if(showRead === false) {
                 const emails =[]
                 setEmails(emails)
                 return            
             }
-            const emails = await emailService.query(filterBy, filterRead)
-            console.log('after read is changed emails:', emails)
+            const emails = await emailService.query(filterBy, true)
+            console.log('Email index loadEmails after read is changed emails:', emails)
             setEmails(emails)
         } catch (err) {
             console.log('err:', err)
@@ -50,12 +60,14 @@ export function EmailIndex() {
 
     async function loadUnreadEmails() {
         try {
-            if(filterUnread === true) {
+            if(showUnread === false) {
                 const unreadEmails =[]
                 setUnreadEmails(unreadEmails)
                 return            
             }
-            const unreadEmails = await emailService.query(filterBy, filterUnread)
+            const unreadEmails = await emailService.query(filterBy, false)
+            console.log('Email index loadUnreadEmails after read is changed emails:', unreadEmails)
+
             setUnreadEmails(unreadEmails)
         } catch (err) {
             console.log('err:', err)
@@ -77,6 +89,19 @@ export function EmailIndex() {
 
     }
 
+    async function removeUnreadEmail(emailId) { 
+        try {
+            if (!confirm('Are you sure?')) return
+            console.log('removing the emailId:', emailId)
+            await emailService.remove(emailId)
+            setEmails(emails => emails.filter(email => email.id !== emailId))
+        } catch (err) {
+            console.log('err:', err)
+            alert("could not remove email")
+        }
+
+    }
+
     function filterByFunc(filterBy){
         try {
             setFilterBy(filterBy)
@@ -86,9 +111,9 @@ export function EmailIndex() {
         }
     }
 
-    function isUnreadFunc(isUnreadVar){
+    function isShowUnreadFunc(isShowUnreadVar){
         try {
-            setFilterUnread(isUnreadVar)
+            setShowUnread(isShowUnreadVar)
         } catch (err) {
             console.log('err:', err)
             alert("could not open unread emails")
@@ -96,9 +121,9 @@ export function EmailIndex() {
 
     }
 
-    function isReadFunc(isReadVar){
+    function isShowReadFunc(isShowReadVar){
         try {
-            setFilterRead(isReadVar)
+            setShowRead(isShowReadVar)
         } catch (err) {
             console.log('err:', err)
             alert("could not open else emails")
@@ -117,6 +142,18 @@ export function EmailIndex() {
         }
 
     }
+    
+    async function isUnreadPreviewFunc(isUnreadPreviewVar){
+        try {
+            isUnreadPreviewVar.isRead = !isUnreadPreviewVar.isRead
+            await emailService.save(isUnreadPreviewVar)
+            setIsUnread(isUnreadPreviewVar)
+        } catch (err) {
+            console.log('err:', err)
+            alert("could not change unread emails display")
+        }
+
+    }
 
     function onOpenModal(){
         const elName = document.querySelector('.modal')
@@ -127,7 +164,7 @@ export function EmailIndex() {
         document.querySelector('.modal').style.display='none'
     }
 
-    if (!emails || !unreadEmails) return <span> email page loading.. </span>
+    if (!unreadEmails) return <span> email page loading.. </span>
 
     return (
         <section className="email-index">
@@ -136,11 +173,11 @@ export function EmailIndex() {
             </div>
             <div className="list-container">
                 <div className="filter-container">
-                    <EmailUnread intialIsRead={false} isShowRead={isUnreadFunc}/>
+                    <EmailUnread intialIsRead={false} isShowRead={isShowUnreadFunc}/>
                 </div>
-                <EmailList emails= {unreadEmails} onRemove= {removeEmail} onRead={isReadPreviewFunc}/>
+                <EmailList emails= {unreadEmails} onRemove= {removeUnreadEmail} onRead={isUnreadPreviewFunc}/>
                 <div className="filter-container">
-                    <EmailUnread intialIsRead={true}  isShowRead={isReadFunc}/>
+                    <EmailUnread intialIsRead={true}  isShowRead={isShowReadFunc}/>
                 </div>
                 <EmailList emails= {emails} onRemove= {removeEmail} onRead={isReadPreviewFunc}/>
                 

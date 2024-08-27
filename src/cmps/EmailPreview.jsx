@@ -11,7 +11,7 @@ export function EmailPreview({email , onRemove, onRead }){
     const [isStar, setIsStar] = useState(email.isStar)
     
     useEffect (() => {
-        console.log('useEffect isRead:', isRead)
+        console.log('EmailPreview useEffect isRead:', isRead)
         onRead(isRead)
     }, [isRead])
 

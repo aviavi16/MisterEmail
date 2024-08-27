@@ -2,15 +2,15 @@ import { useEffect, useState } from "react"
 import downIcon from "../assets/imgs/down-arrow.png"
 
 export function EmailUnread({intialIsRead, isShowRead}){
-    const [showUnread, setShowUnread] = useState(intialIsRead)
+    const [show, setShow] = useState(true)
 
     useEffect(() =>{
-        console.log(' useEffect intialIsRead: showUnread:', intialIsRead, showUnread)
-        isShowRead(showUnread)
-    }, [showUnread])
+        console.log('EmailUnread useEffect intialIsRead: show:', intialIsRead, show)
+        isShowRead(show)
+    }, [show])
 
     function toggleUnread(){
-        setShowUnread(showUnread => !showUnread)
+        setShow(show => !show)
 
     }
 
