@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react"
 import downIcon from "../assets/imgs/down-arrow.png"
 
-export function EmailUnread({isRead}){
-    const [filterByUnread, setFilterByUnread] = useState(null)
+export function EmailUnread({viewSelector}){
+    const [view, setView] = useState(null)
 
     useEffect(() =>{
-        isRead(filterByUnread)
-    }, [filterByUnread])
+        viewSelector(view)
+    }, [view])
 
     function handleChange({target}){
-        const name = target.value
-
-        if (target.value === "Unread") 
-            setFilterByUnread(false )
-        if (target.value === "Read") 
-            setFilterByUnread(true )
-        if (target.value === "All") 
-            setFilterByUnread( null )
-
+        setView(target.value )
     }
 
     return(

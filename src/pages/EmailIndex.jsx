@@ -11,15 +11,15 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const defaultFilter = emailService.getDefaultFilter()
     const [filterBy, setFilterBy] = useState(defaultFilter)
-    const [filterRead, setFilterRead] = useState(false)
+    const [viewSelector, setViewSelector] = useState("All")
 
     useEffect(() => {
         loadEmails()
-    }, [filterBy, filterRead])
+    }, [filterBy, viewSelector])
 
     async function loadEmails() {
         try {
-            const emails = await emailService.query(filterBy, filterRead)
+            const emails = await emailService.query(filterBy, viewSelector)
             setEmails(emails)
         } catch (err) {
             console.log('err:', err)
@@ -60,9 +60,9 @@ export function EmailIndex() {
         }
     }
 
-    function isReadFunc(filterRead){
+    function viewFunc(viewVar){
         try {
-            setFilterRead(filterRead)
+            setViewSelector(viewVar)
         } catch (err) {
             console.log('err:', err)
             alert("could not open unread emails")
@@ -89,7 +89,7 @@ export function EmailIndex() {
             </div>
             <div className="list-container">
                 <div className="filter-container">
-                    <EmailUnread isRead={isReadFunc} />
+                    <EmailUnread viewSelector={viewFunc} />
                 </div>
                 <EmailList emails= {emails} onRemove= {removeEmail} onRead= {previewLoad} />
             </div>

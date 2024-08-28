@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { json, Link } from "react-router-dom"
 import { emailService } from "../services/emailService"
 import  deleteIcon  from "../assets/imgs/delete.png"
 import unreadIcon  from "../assets/imgs/unread-message.png"
@@ -7,38 +7,38 @@ import fullStarIcon  from "../assets/imgs/full-star.png"
 import emptyStarIcon  from "../assets/imgs/empty-star.png"
 
 export function EmailPreview({email , onRemove, onRead }){
-    const [isRead, setIsRead] = useState(email)
-    const [isStar, setIsStar] = useState(email.isStar)
+    const [read, setRead] = useState(email.isRead)
+    const [starred, setStarred] = useState(email.isStar)
     
     useEffect (() => {
-        console.log('useEffect isRead:', isRead)
-        onRead(isRead)
-    }, [isRead])
+        console.log('EmailPreview useEffect read:', read)
+        onRead(read)
+    }, [read])
 
     async function toggleUnread(){
         email.isRead = !email.isRead
         await emailService.save(email)
-        setIsRead(isRead => !isRead )
+        setRead(read => !read )
     }
 
     function rowStyle(){
         var classList = ["email-preview"]
-        if(isRead)
+        if(email.isRead)
             classList.push("dark")
         return classList.join(" ")
     }
 
     function getStar(){
-        if(isStar)
+        if(starred)
             return fullStarIcon
         else
             return emptyStarIcon
     }
 
     async function switchStarState(){
-        email.isRead = !email.isRead
+        email.isStar = !email.isStar
         await emailService.save(email)
-        setIsStar(isStar => !isStar)
+        setStarred(starred => !starred)
     }
 
     return(
@@ -51,6 +51,7 @@ export function EmailPreview({email , onRemove, onRead }){
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
                    <div className="from-email"> { email.sender.name } </div>
                    <Link to={`/email/${email.id}`} className="details-container">
+                         <span className="test-container"> {email.isStar}! </span>
                          <span className="subject-container"> {email.subject}- </span>
                          <span className="body-container"> {email.body} </span>
                     </Link> 
