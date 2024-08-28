@@ -1,17 +1,24 @@
 .search-link{
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
 
 }
 
 .email-filter{
     display: flex;
-    margin-block-start: 20px;
+    flex-wrap: wrap;
     background-color: lightgray;
-    justify-content: left;
+    justify-content: flex-start;
+    img{
+        justify-items: center;
+        margin-inline: 10px;
+
+    }
+}
+.search-container{
+    display: flex;
     align-items: center;
     background-color: lightgray;
-    
 }
 #search{
     background-color: lightgray;
