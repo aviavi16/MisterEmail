@@ -43,7 +43,6 @@ export function EmailIndex() {
 
     function previewLoad(isChanged){
         try{
-            console.log(' previewLoad isChanged:', isChanged)
             loadEmails();
         } catch (err) {
             console.log('err:', err)

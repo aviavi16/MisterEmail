@@ -15,8 +15,10 @@ export function EmailPreview({email , onRemove, onRead }){
         onRead(isRead)
     }, [isRead])
 
-    async function toggleUnread(email){
-        setIsRead(email )
+    async function toggleUnread(){
+        email.isRead = !email.isRead
+        await emailService.save(email)
+        setIsRead(isRead => !isRead )
     }
 
     function rowStyle(){
@@ -60,8 +62,8 @@ export function EmailPreview({email , onRemove, onRead }){
                         </div>
                     </div>  
                    <div className="extra-action-btn">
-                        <button onClick={() => toggleUnread(email)} className="is-read-btn"> Read/Unread </button>             
-                        <button onClick={() => onRemove(email.id)} className="remove-btn"> X </button> 
+                        <button onClick={toggleUnread} className="is-read-btn"> Read/Unread </button>             
+                        <button onClick={onRemove} className="remove-btn"> X </button> 
                    </div>
                           
         </section>

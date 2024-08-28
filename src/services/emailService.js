@@ -16,7 +16,6 @@ _createEmails()
 
 async function query(filterBy, isRead) {
     let emails = await storageService.query(STORAGE_KEY)
-    console.log('1 emails:', emails)
     if (filterBy) {
         let {search} = filterBy
         emails = emails.filter(email => 
@@ -27,8 +26,6 @@ async function query(filterBy, isRead) {
     }
     if(isRead !== null){
         //, if isRead is false get all unread emails, else get all read)
-        console.log('2 emails:', emails)
-        console.log('if isRead is false get all unread emails, else get all read:', isRead)
         emails = emails.filter(email => 
             email.isRead === isRead
         )
