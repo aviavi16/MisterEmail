@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react"
 import { emailService } from "../services/emailService"
-import { EmailList } from "../cmps/EmailsList"
-import { EmailFilter } from "../cmps/EmailFilter"
-import { EmailUnread } from "../cmps/EmailUnread"
-import { SideBar } from "../cmps/SideBar"
-import backgroundLogo from "../assets/imgs/background3.jpg"
 import composeLogo from "../assets/imgs/compose.png"
+import { EmailUnread } from "../cmps/EmailUnread"
+import { EmailFilter } from "../cmps/EmailFilter"
+import { EmailList } from "../cmps/EmailsList"
+import { SideBar } from "../cmps/SideBar"
+import { useEffect, useState } from "react"
 
 
 export function EmailIndex() {
@@ -89,11 +88,11 @@ export function EmailIndex() {
             <div className="search-container">
                 <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
             </div>
-            <div className="filter-container">
-                <EmailUnread isRead={isReadFunc} />
-            </div>
             <div className="list-container">
-                <EmailList emails= {emails} onRemove= {removeEmail} onEmailPreviewChange= {previewLoad} />
+                <div className="filter-container">
+                    <EmailUnread isRead={isReadFunc} />
+                </div>
+                <EmailList emails= {emails} onRemove= {removeEmail} onRead= {previewLoad} />
             </div>
             <div className="compose-container" onClick={onOpenModal}>
                 <img src={composeLogo} />
@@ -105,17 +104,17 @@ export function EmailIndex() {
             {/* <div className="image-container">
                 <img src={backgroundLogo}/>
             </div> */}
-            <div id="myModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
+            <div id="myModal" className="modal">
+                <div className="modal-content">
+                    <div className="modal-header">
                     <button onClick={onCloseModal}>Close</button>
                     <h2>Modal Header</h2>
                     </div>
-                    <div class="modal-body">
+                    <div className="modal-body">
                     <p>Some text in the Modal Body</p>
                     <p>Some other text...</p>
                     </div>
-                    <div class="modal-footer">
+                    <div className="modal-footer">
                     <h3>Modal Footer</h3>
                     </div>
                 </div>
