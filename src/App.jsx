@@ -9,6 +9,7 @@ import { Settings } from './pages/Settings';
 import { EmailIndex } from './pages/EmailIndex';
 import { EmailDetails } from './cmps/EmailDetails';
 import { EmailEdit } from './cmps/EmailEdit';
+import { UserMsg } from './cmps/UserMsg';
 
 export function App() {
 
@@ -30,6 +31,7 @@ export function App() {
             </main>
 
             <AppFooter />
+            <UserMsg />
         </Router>
 
 

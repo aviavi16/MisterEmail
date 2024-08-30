@@ -1,0 +1,22 @@
+.user-msg{
+    position: fixed;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    flex-direction:  column;
+    padding: 0.75rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: white;
+    animation: slideIn 0.3s ease-in-out;
+}
+.user-msg.success{
+    background-color: greenyellow;
+}
+.user-msg.error{
+    background-color: lightcoral;
+}
+.user-msg span{
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
