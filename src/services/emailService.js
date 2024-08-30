@@ -53,16 +53,14 @@ async function save(email) {
 function createEmail(subject, body, sentAt, receiver, sender) {
     return {
         id: utilService.makeId(),
+        sender,
+        receiver,
         subject,
         body,
         isRead: false,
         isStarred: false,
         sentAt,
-        removedAt: null, //for later use 
-        sender,
-        receiver
-        
-
+        removedAt: null //for later use    
     }
 }
 

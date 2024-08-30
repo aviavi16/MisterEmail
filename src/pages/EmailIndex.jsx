@@ -5,10 +5,11 @@ import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailList } from "../cmps/EmailsList"
 import { SideBar } from "../cmps/SideBar"
 import { useEffect, useState } from "react"
-
+import { Link, Outlet } from "react-router-dom"
 
 export function EmailIndex() {
     const [emails, setEmails] = useState(null)
+    const [counter, setCounter] = useState(0)
     const defaultFilter = emailService.getDefaultFilter()
     const [filterBy, setFilterBy] = useState(defaultFilter)
     const [viewSelector, setViewSelector] = useState("All")
@@ -43,7 +44,11 @@ export function EmailIndex() {
 
     function previewLoad(isChanged){
         try{
-            loadEmails();
+            console.log('previewLoad:' , isChanged)
+            if(isChanged === false)
+                setCounter(prev => prev + 1)
+            if(isChanged === true)
+                setCounter(prev => prev - 1)
         } catch (err) {
             console.log('err:', err)
             alert("could not remove email")
@@ -71,9 +76,7 @@ export function EmailIndex() {
     }
 
     function onOpenModal(){
-        const elName = document.querySelector('.modal')
-           // elName.querySelector('h5').innerText = place.lat   
-            //elName.querySelector('h5').innerText = place.lng     
+        const elName = document.querySelector('.modal') 
             elName.style.display='block'
     }
 
@@ -93,31 +96,19 @@ export function EmailIndex() {
                 </div>
                 <EmailList emails= {emails} onRemove= {removeEmail} onRead= {previewLoad} />
             </div>
-            <div className="compose-container" onClick={onOpenModal}>
-                <img src={composeLogo} />
-                <span className="show-container"> Compose </span>         
+            <div className="compose-container">
+                <Link to='/email/edit'>
+                    <img src={composeLogo} />
+                    <span className="show-container"> Compose </span>         
+                </Link>
+
             </div>
             <div className="sidebar-container">
-                <SideBar />
+                <SideBar unreadCounter={counter}/>
             </div>
-            {/* <div className="image-container">
-                <img src={backgroundLogo}/>
-            </div> */}
-            <div id="myModal" className="modal">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <button onClick={onCloseModal}>Close</button>
-                    <h2>Modal Header</h2>
-                    </div>
-                    <div className="modal-body">
-                    <p>Some text in the Modal Body</p>
-                    <p>Some other text...</p>
-                    </div>
-                    <div className="modal-footer">
-                    <h3>Modal Footer</h3>
-                    </div>
-                </div>
-            </div>       
+
+
+            <Outlet />     
         </section>
     )
 }

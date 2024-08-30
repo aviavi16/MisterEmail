@@ -1,0 +1,27 @@
+.email-edit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 400px;
+    aspect-ratio: 1;
+    position: fixed;
+    bottom: 0;
+    right: 0; 
+    box-shadow: 
+        0 0 0 100vmax black,
+        -3px 1px 28px black;
+    padding: 50px;
+    background-color: white;
+    border: solid 3px lightcyan;
+    border-radius: 10px;
+}
+.email-edit .close-btn{
+    position: absolute;
+    top: 2em;
+    right: 2em;
+}
+.email-edit form{
+    display: flex;
+    flex-direction: column;
+}

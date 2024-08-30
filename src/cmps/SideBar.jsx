@@ -5,16 +5,16 @@ import sentLogo from "../assets/imgs/sent.png"
 import draftLogo from "../assets/imgs/draft.jfif"
 import trashLogo from "../assets/imgs/trash.jpg"
 
-export function SideBar(){
+export function SideBar({unreadCounter}){
     return (
         <section className="sidebar-container">
             <div className="inbox-container">
                 <img src={inboxLogo} />
-                
+                <span className="unread-counter">{unreadCounter}</span>
                 <span className="show-container"> 
                     Inbox 
                 </span>
-            </div>
+            </div> 
 
             <div className="starred-container">
                 <img src={starredLogo} />

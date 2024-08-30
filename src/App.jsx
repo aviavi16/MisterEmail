@@ -8,6 +8,7 @@ import { Settings } from './pages/Settings';
 
 import { EmailIndex } from './pages/EmailIndex';
 import { EmailDetails } from './cmps/EmailDetails';
+import { EmailEdit } from './cmps/EmailEdit';
 
 export function App() {
 
@@ -20,7 +21,9 @@ export function App() {
                     <Route path='/' element={<Home />} />
                     <Route path='/about' element={<About />} />
                     <Route path='/settings' element={<Settings />} />
-                    <Route path='/email' element={<EmailIndex />} />
+                    <Route path='/email' element={<EmailIndex />} > 
+                        <Route path='/email/edit/:id?' element={ <EmailEdit /> } />
+                    </Route>
                     <Route path='/email/:id' element={<EmailDetails />} />
                 </Routes>
 
