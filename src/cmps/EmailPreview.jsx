@@ -23,7 +23,7 @@ export function EmailPreview({email , onRemove, onRead }){
 
     function rowStyle(){
         var classList = ["email-preview"]
-        if(email.isRead)
+        if(email.isRead === true)
             classList.push("dark")
         return classList.join(" ")
     }
@@ -49,7 +49,7 @@ export function EmailPreview({email , onRemove, onRead }){
                     </div> 
                    
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
-                   <div className="from-email"> { email.sender.name } </div>
+                   <div className="from-email"> { email.sender ? email.sender.name : ' '} </div>
                    <Link to={`/email/${email.id}`} className="details-container">
                          <span className="test-container"> {email.isStar}! </span>
                          <span className="subject-container"> {email.subject}- </span>
@@ -65,7 +65,7 @@ export function EmailPreview({email , onRemove, onRead }){
                    <div className="extra-action-btn">
                         <button onClick={toggleUnread} className="is-read-btn"> Read/Unread </button>             
                         <button onClick={onRemove} className="remove-btn"> X </button> 
-                        <Link to={'/email/edit/${email.id}'}> Edit </Link>
+                        <Link to={`/email/edit/${email.id}`}> Edit </Link>
                    </div>
                           
         </section>

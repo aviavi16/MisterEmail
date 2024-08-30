@@ -43,23 +43,28 @@ async function remove(id) {
     return storageService.remove(STORAGE_KEY, id)
 }
 
-async function save(email) {
-    if (email.id)
-        storageService.put(STORAGE_KEY, email)
-    else
-        storageService.post(storageService, email)
+async function save(emailToSave) {
+    if (emailToSave.id){
+
+        return storageService.put(STORAGE_KEY, emailToSave)
+    }
+    else{
+        emailToSave.isRead = 'false'
+        return storageService.post(STORAGE_KEY, emailToSave)
+    }
+        
 }
 
-function createEmail(subject, body, sentAt, receiver, sender) {
+function createEmail(subject, body, receiver ) {
     return {
-        id: utilService.makeId(),
-        sender,
+        id: null,
+        sender : null,
         receiver,
         subject,
         body,
         isRead: false,
         isStarred: false,
-        sentAt,
+        sentAt: "now",
         removedAt: null //for later use    
     }
 }

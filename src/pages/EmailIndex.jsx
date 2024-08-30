@@ -5,9 +5,10 @@ import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailList } from "../cmps/EmailsList"
 import { SideBar } from "../cmps/SideBar"
 import { useEffect, useState } from "react"
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 
 export function EmailIndex() {
+    const navigate = useNavigate()
     const [emails, setEmails] = useState(null)
     const [counter, setCounter] = useState(0)
     const defaultFilter = emailService.getDefaultFilter()
@@ -75,13 +76,25 @@ export function EmailIndex() {
 
     }
 
-    function onOpenModal(){
-        const elName = document.querySelector('.modal') 
-            elName.style.display='block'
-    }
+    async function onSaveEmail(email){
+        try{
+            console.log('email:', email)
+            const emailToSave = await emailService.save(email)
+            console.log('emailToSave:', emailToSave)
 
-    function onCloseModal() {
-        document.querySelector('.modal').style.display='none'
+            if (!email.id)
+                setEmails(emails => [...emails, emailToSave])
+            else
+                setEmails(emails => emails.map(
+                    _email => _email.id === emailToSave.id ? emailToSave : _email
+                ))
+            navigate('/email')
+        } catch (err){
+            console.log('error adding email:', err)
+        }
+       
+
+
     }
 
     if (!emails) return <span> email page loading.. </span>
@@ -108,7 +121,7 @@ export function EmailIndex() {
             </div>
 
 
-            <Outlet />     
+            <Outlet context={ {onSaveEmail }}/>     
         </section>
     )
 }
