@@ -6,6 +6,7 @@ import { EmailList } from "../cmps/EmailsList"
 import { SideBar } from "../cmps/SideBar"
 import { useEffect, useState } from "react"
 import { Link, Outlet, useNavigate } from "react-router-dom"
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
 
 export function EmailIndex() {
     const navigate = useNavigate()
@@ -25,7 +26,7 @@ export function EmailIndex() {
             setEmails(emails)
         } catch (err) {
             console.log('err:', err)
-            alert("problem loading emails")
+            showErrorMsg("problem loading emails")
         }
 
     }
@@ -36,9 +37,10 @@ export function EmailIndex() {
             console.log('removing the emailId:', emailId)
             await emailService.remove(emailId)
             setEmails(emails => emails.filter(email => email.id !== emailId))
+            showSuccessMsg(`Email (${emailId}) removed`)
         } catch (err) {
             console.log('err:', err)
-            alert("could not remove email")
+            showErrorMsg("could not remove email")
         }
 
     }
