@@ -64,7 +64,7 @@ export function EmailPreview({email , onRemove, onRead }){
                     </div>  
                    <div className="extra-action-btn">
                         <button onClick={toggleUnread} className="is-read-btn"> Read/Unread </button>             
-                        <button onClick={onRemove} className="remove-btn"> X </button> 
+                        <button onClick={() => onRemove(email.id)} className="remove-btn"> X </button> 
                         <Link to={`/email/edit/${email.id}`}> Edit </Link>
                    </div>
                           

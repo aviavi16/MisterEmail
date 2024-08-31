@@ -54,7 +54,7 @@ export function EmailIndex() {
                 setCounter(prev => prev - 1)
         } catch (err) {
             console.log('err:', err)
-            alert("could not remove email")
+            showErrorMsg("could not change counter email")
         }
 
     }
@@ -64,7 +64,7 @@ export function EmailIndex() {
             setFilterBy(filterBy)
         } catch (err) {
             console.log('err:', err)
-            alert("could not remove email")
+            showErrorMsg("could not remove email")
         }
     }
 
@@ -73,7 +73,7 @@ export function EmailIndex() {
             setViewSelector(viewVar)
         } catch (err) {
             console.log('err:', err)
-            alert("could not open unread emails")
+            showErrorMsg("could not open unread emails")
         }
 
     }
@@ -90,9 +90,10 @@ export function EmailIndex() {
                 setEmails(emails => emails.map(
                     _email => _email.id === emailToSave.id ? emailToSave : _email
                 ))
+            showSuccessMsg(`Email (${emailToSave.id}) saved`)
             navigate('/email')
         } catch (err){
-            console.log('error adding email:', err)
+            showErrorMsg('error adding email:', err)
         }
        
 
