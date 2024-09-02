@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { json, Link } from "react-router-dom"
 import { emailService } from "../services/emailService"
 import  deleteIcon  from "../assets/imgs/delete.png"
@@ -9,10 +9,14 @@ import emptyStarIcon  from "../assets/imgs/empty-star.png"
 export function EmailPreview({email , onRemove, onRead }){
     const [read, setRead] = useState(email.isRead)
     const [starred, setStarred] = useState(email.isStar)
-    
+    const isMounted = useRef(false);
+
     useEffect (() => {
         console.log('EmailPreview useEffect read:', read)
-        onRead(read)
+        console.log('isMounted.current:', isMounted.current)
+        if (isMounted.current === true) onRead(read);
+        else isMounted.current = true;  
+        //onRead(read)
     }, [read])
 
     async function toggleUnread(){

@@ -4,17 +4,24 @@ import { EmailUnread } from "../cmps/EmailUnread"
 import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailList } from "../cmps/EmailsList"
 import { SideBar } from "../cmps/SideBar"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, Outlet, useNavigate } from "react-router-dom"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
 
 export function EmailIndex() {
     const navigate = useNavigate()
     const [emails, setEmails] = useState(null)
-    const [counter, setCounter] = useState(0)
+    const [counter, setCounter] = useState(null)
     const defaultFilter = emailService.getDefaultFilter()
     const [filterBy, setFilterBy] = useState(defaultFilter)
     const [viewSelector, setViewSelector] = useState("All")
+
+
+    useEffect(() => {
+
+        setCounter( emailService.getUnreadCounter());
+        
+    }, [])
 
     useEffect(() => {
         loadEmails()
@@ -125,6 +132,7 @@ export function EmailIndex() {
 
 
             <Outlet context={ {onSaveEmail }}/>     
+
         </section>
     )
 }

@@ -7,7 +7,8 @@ export const emailService = {
     remove,
     save,
     createEmail,
-    getDefaultFilter
+    getDefaultFilter,
+    getUnreadCounter
 }
 
 const STORAGE_KEY = "emails"
@@ -104,6 +105,17 @@ function getDefaultFilter(){
     return {
         search: ''
     }
+}
+
+function getUnreadCounter(){
+    let emails = utilService.loadFromStorage(STORAGE_KEY)
+    if(!emails) return 0
+    emails = emails.filter(mail => 
+        mail.isRead === false)
+     
+        console.log('emails.length :', emails.length )
+    return emails.length
+    
 }
 
 
