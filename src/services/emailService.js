@@ -22,7 +22,7 @@ async function query(filterBy, viewSelector) {
         emails = emails.filter(email => 
             email.subject.toLowerCase().includes(search.toLowerCase())
             || (email.sender.email.toLowerCase().includes(search.toLowerCase()))
-            || (email.receiver.toLowerCase().includes(search.toLowerCase()))
+            || (email.receiver.email.toLowerCase().includes(search.toLowerCase()))
         )
     }
     if(viewSelector !== null && viewSelector !== "All"){
@@ -50,7 +50,7 @@ async function save(emailToSave) {
         return storageService.put(STORAGE_KEY, emailToSave)
     }
     else{
-        emailToSave.isRead = 'false'
+        emailToSave.isRead = false
         return storageService.post(STORAGE_KEY, emailToSave)
     }
         
@@ -60,7 +60,9 @@ function createEmail(subject, body, receiver ) {
     return {
         id: null,
         sender : null,
-        receiver,
+        receiver: {
+            email : receiver, 
+            name},
         subject,
         body,
         isRead: false,
@@ -81,19 +83,19 @@ function _createEmails() {
             id: utilService.makeId(), subject: "the email app is up!",
             body: "this app is revotunalry!", isRead: false, isStarred: false,
             sentAt: "June 28", removedAt: null, sender: {email: "AvinoamInc@gmail.com", name: "Avinoam"},
-            receiver: " React managemant"
+            receiver: {email: "React managemant@react.org.il", name: "React"}
         },
         {
             id: utilService.makeId(), subject: "the email app has a bug!!!",
             body: "Please fix it immediatly!!!", isRead: false, isStarred: true,
             sentAt: "July 9", removedAt: null, sender: {email: "AvinoamInc@gmail.com", name: "Avinoam"},
-            receiver: " React managemant"
+            receiver: {email: "React managemant@react.org.il", name: "React"}
         },
         {
             id: utilService.makeId(), subject: "Bug fixed!",
             body: "the app is back to normal!", isRead: true, isStarred: false,
-            sentAt: "Jan 19", removedAt: null, sender: {email: "React managemant@gmail.com", name: "React managemant"},
-            receiver: " AvinoamInc@gmail.com"
+            sentAt: "Jan 19", removedAt: null, sender: {email: "React managemant@react.org.il", name: "React"},
+            receiver: {email: "AvinoamInc@gmail.com", name: "Avinoam"}
         }
         
         //TODO we want to change the date into numbers, in strings when entering to db the order might be jumbled a bit

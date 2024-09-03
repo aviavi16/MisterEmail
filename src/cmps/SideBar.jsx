@@ -10,10 +10,11 @@ export function SideBar({unreadCounter}){
         <section className="sidebar-container">
             <div className="inbox-container">
                 <img src={inboxLogo} />
-                <span className="unread-counter">{unreadCounter}</span>
                 <span className="show-container"> 
                     Inbox 
                 </span>
+                <span className="unread-counter">{unreadCounter}</span>
+
             </div> 
 
             <div className="starred-container">

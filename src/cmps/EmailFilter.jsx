@@ -16,14 +16,16 @@ export function EmailFilter({ filterBy, onFilterBy}){
 
     return(
         <section className="email-filter">
-            <img src={searchIcon} htmlFor="search" className="search-link"/>
-            <input 
-                value={filterByEdit.search} 
-                onChange={handleChange}
-                name="search"
-                id="search" 
-                type="text" 
-                placeholder="Search mail"/>  
+            <div className="filter-container">
+                <img src={searchIcon} htmlFor="search" className="search-link"/>
+                <input 
+                    value={filterByEdit.search} 
+                    onChange={handleChange}
+                    name="search"
+                    id="search" 
+                    type="text" 
+                    placeholder="Search mail"/>  
+            </div>
 
             
 

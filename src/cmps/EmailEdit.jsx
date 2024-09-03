@@ -23,12 +23,13 @@ export function EmailEdit(){
         setEmail( prevEmail => ({ ...prevEmail, [field]: value }))
 
     }
-    const { receiver, subject, body } = email
+    const { receiver , subject, body } = email
 
     function onSubmitEmail( ev ){
         ev.preventDefault()
         console.log('onSaveEmail:', onSaveEmail)
         onSaveEmail(email)
+        //TODO after the email is sent i want the unread counter to get +1 want to re-render (happens on refresh by query)
     }
 
     return (
@@ -38,7 +39,7 @@ export function EmailEdit(){
             
             <form onSubmit={onSubmitEmail}>
                 <label htmlFor="receiver"> To:   </label>
-                <input onChange={handleChange} value={ receiver } type="text" id="receiver" name="receiver" />
+                <input onChange={handleChange} value={ receiver.email } type="text" id="receiver" name="receiver" />
 
                 <label htmlFor="subject">   Subject: </label>
                 <input onChange={handleChange} value={ subject } type="text" id="subject" name="subject" />

@@ -1,19 +1,22 @@
 .email-index{
    display: grid;
-   grid-template-columns: 1fr 8fr;
+   grid-template-columns: 160px 1fr;
    grid-template-rows: 0.5fr 6fr;
    background-color: lightblue;
 
 }
 .sidebar-container{
     grid-area: 2/ 1 / span 2/ span 1;   
-    display: flex;
-    flex-direction: column;
-
+    display: grid;
+    align-self: start;
     font-family: 'Courier New', Courier, monospace;
     font-size: 30px;
-    margin-block-start: 20px;
     gap: 20px; 
+    flex-direction: column;
+    justify-content: start;
+    font-family: monospace;
+    font-size: 20px;
+    gap: 10px;
     img{
         width: 25px;
         height: 25px;
@@ -21,24 +24,18 @@
 }
 
 .sidebar-container:hover{
-    text-align: center;
     filter: drop-shadow(.05em .05em orange);
 
     .show-container{
         display: table-cell;
-        flex-direction: column;
-        justify-content: center;
-        align-content: space-around;
-        font-family: monospace;
-        font-size: 20px;
-        gap: 10px;
+
         border-radius: 50%;
         background: turquoise;
     } 
 }
-.sidebar-container:hover{
+.sidebar-container{
     .inbox-container, .starred-container, .draft-container, .trash-container, .sent-container{
-        justify-content: space-between;
+        justify-content: start;
     }
 }
 .list-container{
@@ -55,50 +52,29 @@
 .compose-container{
     grid-area: 1/1;
     display: flex;
+    height: 50px;
+    gap: 15px;
     flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
-    background-color: lightgray;
-    width: 100%;
-    
+    margin-inline: 15px;
+    font-family: monospace;
+    font-size: 20px;
+    align-items: center;
     img{
         width: 25px;
         height: 25px;
-        margin-inline: 10px;
     }
 
 }
 
 .compose-container:hover{
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-    .show-container{
+   
+    
         
-        display: table-cell;
-        flex-direction: column;
-        justify-content: center;
-        align-content: space-around;
-        font-family: monospace;
-        font-size: 20px;
-        gap: 10px;
+
         border-radius: 50%;
         background: turquoise;
 
-    }
-}
-
-
-.image-container{
-    grid-area: 2/1/ span 2/ span 2;
-   
-    object-fit: cover;
-    align-self: stretch;
-    justify-self: stretch;
-    opacity: .6;
-    z-index: -1; 
+    
 }
 
 /* The Modal (background) */

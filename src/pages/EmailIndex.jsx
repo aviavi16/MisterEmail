@@ -119,13 +119,12 @@ export function EmailIndex() {
                 </div>
                 <EmailList emails= {emails} onRemove= {removeEmail} onRead= {previewLoad} />
             </div>
-            <div className="compose-container">
-                <Link to='/email/edit'>
-                    <img src={composeLogo} />
-                    <span className="show-container"> Compose </span>         
-                </Link>
 
-            </div>
+            <Link to='/email/edit' className="compose-container">
+                <img src={composeLogo} />
+                <span className="email-compose"> Compose </span>         
+            </Link>
+            
             <div className="sidebar-container">
                 <SideBar unreadCounter={counter}/>
             </div>
