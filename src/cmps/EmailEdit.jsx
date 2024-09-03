@@ -23,7 +23,6 @@ export function EmailEdit(){
         setEmail( prevEmail => ({ ...prevEmail, [field]: value }))
 
     }
-    //TODO bug creating email is not inserting receiver corectly
     const { receiver , subject, body } = email
 
     function onSubmitEmail( ev ){
@@ -40,7 +39,7 @@ export function EmailEdit(){
             
             <form onSubmit={onSubmitEmail}>
                 <label htmlFor="receiver"> To:   </label>
-                <input onChange={handleChange} value={ receiver.email } type="text" id="receiver" name="receiver" />
+                <input onChange={handleChange} value={ receiver } type="text" id="receiver" name="receiver" />
 
                 <label htmlFor="subject">   Subject: </label>
                 <input onChange={handleChange} value={ subject } type="text" id="subject" name="subject" />

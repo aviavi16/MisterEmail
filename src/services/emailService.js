@@ -23,8 +23,8 @@ async function query(filterBy, viewSelector) {
 
         emails = emails.filter(email => 
             email.subject.toLowerCase().includes(search.toLowerCase())
-            || (email.sender.email.toLowerCase().includes(search.toLowerCase()))
-            || (email.receiver.email.toLowerCase().includes(search.toLowerCase()))
+            || (email.sender.toLowerCase().includes(search.toLowerCase()))
+            || (email.receiver.toLowerCase().includes(search.toLowerCase()))
         )
     }
     if(viewSelector !== null && viewSelector !== "All"){
@@ -61,13 +61,8 @@ async function save(emailToSave) {
 function createEmail(subject, body, receiver ) {
     return {
         id: null,
-        sender : {
-            email: "avinoam@gmail.com",
-            name: "Avinoam"
-        },
-        receiver: {
-            email : receiver, 
-            name : ""},
+        sender : "avinoam@gmail.com",
+        receiver,
         subject,
         body,
         isRead: false,
@@ -87,20 +82,20 @@ function _createEmails() {
         {
             id: utilService.makeId(), subject: "the email app is up!",
             body: "this app is revotunalry!", isRead: false, isStarred: false,
-            sentAt: "June 28", removedAt: null, sender: {email: "AvinoamInc@gmail.com", name: "Avinoam"},
-            receiver: {email: "React managemant@react.org.il", name: "React"}
+            sentAt: "June 28", removedAt: null, sender:"AvinoamInc@gmail.com",
+            receiver:  "React managemant@react.org.il"
         },
         {
             id: utilService.makeId(), subject: "the email app has a bug!!!",
             body: "Please fix it immediatly!!!", isRead: false, isStarred: true,
-            sentAt: "July 9", removedAt: null, sender: {email: "AvinoamInc@gmail.com", name: "Avinoam"},
-            receiver: {email: "React managemant@react.org.il", name: "React"}
+            sentAt: "July 9", removedAt: null, sender:"AvinoamInc@gmail.com",
+            receiver: "React managemant@react.org.il"
         },
         {
             id: utilService.makeId(), subject: "Bug fixed!",
             body: "the app is back to normal!", isRead: true, isStarred: false,
-            sentAt: "Jan 19", removedAt: null, sender: {email: "React managemant@react.org.il", name: "React"},
-            receiver: {email: "AvinoamInc@gmail.com", name: "Avinoam"}
+            sentAt: "Jan 19", removedAt: null, sender: "React managemant@react.org.il",
+            receiver: "AvinoamInc@gmail.com"
         }
         
         //TODO we want to change the date into numbers, in strings when entering to db the order might be jumbled a bit

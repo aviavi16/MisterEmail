@@ -47,6 +47,7 @@
 }
 .search-container{
     grid-area: 1 / 2/ span 1 /span 2;
+    gap: 1em;
 }
 
 .compose-container{

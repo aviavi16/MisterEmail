@@ -115,11 +115,11 @@ export function EmailIndex() {
             <div className="search-container">
                 <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
                 <Starred filterBy={filterBy} onFilterBy={filterByFunc}/>
-            </div>
-            <div className="list-container">
                 <div className="filter-container">
                     <EmailUnread viewSelector={viewFunc} />
                 </div>
+            </div>
+            <div className="list-container">
                 <EmailList emails= {emails} onRemove= {removeEmail} onRead= {onEmailRead} />
             </div>
 

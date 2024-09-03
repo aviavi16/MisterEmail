@@ -53,7 +53,8 @@ export function EmailPreview({email , onRemove, onRead }){
                     </div> 
                    
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
-                   <div className="from-email"> { email.sender ? email.sender.name : ' '} </div>
+                   {/* the sender must have @ in it's address!! */}
+                   <div className="from-email"> { email.sender ? email.sender.toString().split("@")[0] : ' '} </div>
                    <Link to={`/email/${email.id}`} className="details-container">
                          <span className="test-container"> {email.isStar}! </span>
                          <span className="subject-container"> {email.subject}- </span>
