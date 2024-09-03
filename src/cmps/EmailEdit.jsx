@@ -23,6 +23,7 @@ export function EmailEdit(){
         setEmail( prevEmail => ({ ...prevEmail, [field]: value }))
 
     }
+   
     const { receiver , subject, body } = email
 
     function onSubmitEmail( ev ){

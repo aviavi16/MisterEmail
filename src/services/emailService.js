@@ -19,6 +19,8 @@ async function query(filterBy, viewSelector) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
         let {search} = filterBy
+        console.log('filterBy:', filterBy)
+
         emails = emails.filter(email => 
             email.subject.toLowerCase().includes(search.toLowerCase())
             || (email.sender.email.toLowerCase().includes(search.toLowerCase()))
@@ -59,10 +61,13 @@ async function save(emailToSave) {
 function createEmail(subject, body, receiver ) {
     return {
         id: null,
-        sender : null,
+        sender : {
+            email: "avinoam@gmail.com",
+            name: "Avinoam"
+        },
         receiver: {
             email : receiver, 
-            name},
+            name : ""},
         subject,
         body,
         isRead: false,

@@ -16,6 +16,7 @@ export function EmailIndex() {
     const [filterBy, setFilterBy] = useState(defaultFilter)
     const [viewSelector, setViewSelector] = useState("All")
 
+    //TODO add the mobile resolution change
 
     useEffect(() => {
 
@@ -52,7 +53,7 @@ export function EmailIndex() {
 
     }
 
-    function previewLoad(isChanged){
+    function onEmailRead(isChanged){
         try{
             console.log('previewLoad:' , isChanged)
             if(isChanged === false)
@@ -71,7 +72,7 @@ export function EmailIndex() {
             setFilterBy(filterBy)
         } catch (err) {
             console.log('err:', err)
-            showErrorMsg("could not remove email")
+            showErrorMsg("could not search email")
         }
     }
 
@@ -117,14 +118,14 @@ export function EmailIndex() {
                 <div className="filter-container">
                     <EmailUnread viewSelector={viewFunc} />
                 </div>
-                <EmailList emails= {emails} onRemove= {removeEmail} onRead= {previewLoad} />
+                <EmailList emails= {emails} onRemove= {removeEmail} onRead= {onEmailRead} />
             </div>
 
             <Link to='/email/edit' className="compose-container">
                 <img src={composeLogo} />
                 <span className="email-compose"> Compose </span>         
             </Link>
-            
+
             <div className="sidebar-container">
                 <SideBar unreadCounter={counter}/>
             </div>
