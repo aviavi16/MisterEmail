@@ -7,6 +7,7 @@ import { SideBar } from "../cmps/SideBar"
 import { useEffect, useRef, useState } from "react"
 import { Link, Outlet, useNavigate } from "react-router-dom"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
+import { Starred } from "../cmps/Starred"
 
 export function EmailIndex() {
     const navigate = useNavigate()
@@ -113,6 +114,7 @@ export function EmailIndex() {
         <section className="email-index">
             <div className="search-container">
                 <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
+                <Starred filterBy={filterBy} onFilterBy={filterByFunc}/>
             </div>
             <div className="list-container">
                 <div className="filter-container">

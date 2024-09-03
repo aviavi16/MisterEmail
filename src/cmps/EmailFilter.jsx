@@ -9,9 +9,19 @@ export function EmailFilter({ filterBy, onFilterBy}){
     }, [filterByEdit])
 
     function handleChange({target}){
-        const {type, name} = target
-        const value = type === 'text' ? target.value : +target.value
-        setFilterByEdit(prev => ({ ...prev, [name] : value }))
+        let {name: field, value, type } = target
+        switch (type) {
+            case 'number':
+            case 'range' :
+                value = +value
+                break;
+            case 'checkbox':
+                value = target.checked
+                break;
+            default:
+                break;
+        }
+        setFilterByEdit(prev => ({ ...prev, [field] : value }))
     }
 
     return(
