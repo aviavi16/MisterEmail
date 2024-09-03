@@ -1,8 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export function Starred({ filterBy, onFilterBy}){
 
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
+
+    useEffect( ()=>{
+        onFilterBy(filterByToEdit)
+    }, [filterByToEdit])
 
     function handleChange({target}){
         let {name: field, value, type } = target
@@ -17,12 +21,13 @@ export function Starred({ filterBy, onFilterBy}){
             default:
                 break;
         }
+        console.log('target:', target)
         setFilterByToEdit(prev => ({ ...prev, [field] : value }))
     }
     return (
         <section className="starred">
             <label htmlFor="starred"> Show Starred </label>
-            <input value={filterByToEdit.isStarred} type="button" onClick={handleChange} />
+            <input onChange={handleChange} value={filterByToEdit.isStarred} name="isStarred" type="checkbox" onClick={handleChange} />
         </section>
     )
 }

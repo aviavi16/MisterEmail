@@ -5,7 +5,7 @@ import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailList } from "../cmps/EmailsList"
 import { SideBar } from "../cmps/SideBar"
 import { useEffect, useRef, useState } from "react"
-import { Link, Outlet, useNavigate } from "react-router-dom"
+import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
 import { Starred } from "../cmps/Starred"
 
@@ -13,20 +13,21 @@ export function EmailIndex() {
     const navigate = useNavigate()
     const [emails, setEmails] = useState(null)
     const [counter, setCounter] = useState(null)
-    const defaultFilter = emailService.getDefaultFilter()
+    const [searchParams, setSearchParams] = useSearchParams()  
+    const defaultFilter = emailService.getFilterFromSearchParams(searchParams)
     const [filterBy, setFilterBy] = useState(defaultFilter)
     const [viewSelector, setViewSelector] = useState("All")
+
 
     //TODO add the mobile resolution change
 
     useEffect(() => {
-
         setCounter( emailService.getUnreadCounter());
-        
     }, [])
 
     useEffect(() => {
         loadEmails()
+        setSearchParams(filterBy)
     }, [filterBy, viewSelector])
 
     async function loadEmails() {
@@ -42,6 +43,7 @@ export function EmailIndex() {
 
     async function removeEmail(emailId) { 
         try {
+            //TODO add email unread count using the service
             if (!confirm('Are you sure?')) return
             console.log('removing the emailId:', emailId)
             await emailService.remove(emailId)
@@ -70,7 +72,7 @@ export function EmailIndex() {
 
     function filterByFunc(filterBy){
         try {
-            setFilterBy(filterBy)
+            setFilterBy(prevFilter => ({...prevFilter , ...filterBy}))
         } catch (err) {
             console.log('err:', err)
             showErrorMsg("could not search email")
@@ -110,11 +112,12 @@ export function EmailIndex() {
     }
 
     if (!emails) return <span> email page loading.. </span>
+    const { search, isStarred } = filterBy
     return (
         <section className="email-index">
             <div className="search-container">
-                <EmailFilter filterBy={filterBy} onFilterBy={filterByFunc} />
-                <Starred filterBy={filterBy} onFilterBy={filterByFunc}/>
+                <EmailFilter filterBy={{ search }} onFilterBy={filterByFunc} />
+                <Starred filterBy={{ isStarred }} onFilterBy={filterByFunc}/>
                 <div className="filter-container">
                     <EmailUnread viewSelector={viewFunc} />
                 </div>

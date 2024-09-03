@@ -8,7 +8,8 @@ export const emailService = {
     save,
     createEmail,
     getDefaultFilter,
-    getUnreadCounter
+    getUnreadCounter,
+    getFilterFromSearchParams
 }
 
 const STORAGE_KEY = "emails"
@@ -18,14 +19,19 @@ _createEmails()
 async function query(filterBy, viewSelector) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
-        let {search} = filterBy
+        let {search, isStarred} = filterBy
         console.log('filterBy:', filterBy)
 
         emails = emails.filter(email => 
-            email.subject.toLowerCase().includes(search.toLowerCase())
+            (email.subject.toLowerCase().includes(search.toLowerCase())
             || (email.sender.toLowerCase().includes(search.toLowerCase()))
-            || (email.receiver.toLowerCase().includes(search.toLowerCase()))
+            || (email.receiver.toLowerCase().includes(search.toLowerCase())))
         )
+        if ( isStarred === true){
+            emails = emails.filter(email => (
+                (email.isStarred === isStarred)
+            ))
+        }
     }
     if(viewSelector !== null && viewSelector !== "All"){
         console.log('viewSelector:', viewSelector)
@@ -105,7 +111,8 @@ function _createEmails() {
 
 function getDefaultFilter(){
     return {
-        search: ''
+        search: '',
+        isStarred: null
     }
 }
 
@@ -118,6 +125,16 @@ function getUnreadCounter(){
         console.log('emails.length :', emails.length )
     return emails.length
     
+}
+
+function getFilterFromSearchParams(searchParams){
+    const defaultFilter = getDefaultFilter()
+    const filterBy ={}
+    for (const field in defaultFilter){
+        filterBy[field] = searchParams.get(field) || ''
+    }
+
+    return filterBy
 }
 
 
