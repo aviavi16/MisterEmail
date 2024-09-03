@@ -23,7 +23,7 @@ export function EmailEdit(){
         setEmail( prevEmail => ({ ...prevEmail, [field]: value }))
 
     }
-   
+    //TODO bug creating email is not inserting receiver corectly
     const { receiver , subject, body } = email
 
     function onSubmitEmail( ev ){
