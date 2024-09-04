@@ -3,11 +3,12 @@ import composeLogo from "../assets/imgs/compose.png"
 import { EmailUnread } from "../cmps/EmailUnread"
 import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailList } from "../cmps/EmailsList"
-import { SideBar } from "../cmps/SideBar"
+import { EmailFolderList } from "../cmps/EmailFolderList"
 import { useEffect, useRef, useState } from "react"
 import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
 import { Starred } from "../cmps/Starred"
+import { getExistingProperties } from "../services/util.service"
 
 export function EmailIndex() {
     const navigate = useNavigate()
@@ -20,6 +21,7 @@ export function EmailIndex() {
 
 
     //TODO add the mobile resolution change
+    //TODO fix checkbox filter params bug
 
     useEffect(() => {
         setCounter( emailService.getUnreadCounter());
@@ -27,7 +29,7 @@ export function EmailIndex() {
 
     useEffect(() => {
         loadEmails()
-        setSearchParams(filterBy)
+        setSearchParams(getExistingProperties(filterBy))
     }, [filterBy, viewSelector])
 
     async function loadEmails() {
@@ -131,8 +133,8 @@ export function EmailIndex() {
                 <span className="email-compose"> Compose </span>         
             </Link>
 
-            <div className="sidebar-container">
-                <SideBar unreadCounter={counter}/>
+            <div className="email-folder-container">
+                <EmailFolderList unreadCounter={counter}/>
             </div>
 
 

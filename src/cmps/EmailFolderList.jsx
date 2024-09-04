@@ -5,9 +5,9 @@ import sentLogo from "../assets/imgs/sent.png"
 import draftLogo from "../assets/imgs/draft.jfif"
 import trashLogo from "../assets/imgs/trash.jpg"
 
-export function SideBar({unreadCounter}){
+export function EmailFolderList({unreadCounter}){
     return (
-        <section className="sidebar-container">
+        <section className="email-folder">
             <div className="inbox-container">
                 <img src={inboxLogo} />
                 <span className="show-container"> 

@@ -27,7 +27,14 @@ export function Starred({ filterBy, onFilterBy}){
     return (
         <section className="starred">
             <label htmlFor="starred"> Show Starred </label>
-            <input onChange={handleChange} value={filterByToEdit.isStarred} name="isStarred" type="checkbox" onClick={handleChange} />
+            <input 
+                onChange={handleChange} 
+                value={filterByToEdit.isStarred} 
+                id="starred" 
+                name="isStarred" 
+                type="checkbox" 
+                onClick={handleChange} 
+            />
         </section>
     )
 }
