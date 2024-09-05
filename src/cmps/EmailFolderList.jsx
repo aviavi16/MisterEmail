@@ -20,7 +20,7 @@ export function EmailFolderList({unreadCounter, saveFilterBeforeSwitchTab}){
 
             </Link>
 
-            <Link to='/email/starred' className="starred-container">
+            <Link onClick={() => saveFilterBeforeSwitchTab(searchParams)} to='/email/starred' className="starred-container">
                 <img src={starredLogo} />
                 <span className="show-container"> Starred </span>
             </Link>
