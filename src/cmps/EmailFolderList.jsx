@@ -4,23 +4,26 @@ import starredLogo from "../assets/imgs/starred.png"
 import sentLogo from "../assets/imgs/sent.png"
 import draftLogo from "../assets/imgs/draft.jfif"
 import trashLogo from "../assets/imgs/trash.jpg"
+import { Link, useSearchParams } from "react-router-dom"
 
-export function EmailFolderList({unreadCounter}){
+export function EmailFolderList({unreadCounter, saveFilterBeforeSwitchTab}){
+    const [searchParams, setSearchParams] = useSearchParams()  
+
     return (
         <section className="email-folder">
-            <div className="inbox-container">
+            <Link onClick={() => saveFilterBeforeSwitchTab(searchParams)} to='/email/inbox' className="inbox-container">
                 <img src={inboxLogo} />
                 <span className="show-container"> 
                     Inbox 
                 </span>
                 <span className="unread-counter">{unreadCounter}</span>
 
-            </div> 
+            </Link>
 
-            <div className="starred-container">
+            <Link to='/email/starred' className="starred-container">
                 <img src={starredLogo} />
                 <span className="show-container"> Starred </span>
-            </div>
+            </Link>
 
             <div className="sent-container">
                 <img src={sentLogo} />

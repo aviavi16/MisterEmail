@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 export function Starred({ filterBy, onFilterBy}){
 
@@ -8,33 +9,26 @@ export function Starred({ filterBy, onFilterBy}){
         onFilterBy(filterByToEdit)
     }, [filterByToEdit])
 
-    function handleChange({target}){
-        let {name: field, value, type } = target
-        switch (type) {
-            case 'number':
-            case 'range' :
-                value = +value
-                break;
-            case 'checkbox':
-                value = target.checked
-                break;
-            default:
-                break;
-        }
-        console.log('target:', target)
-        setFilterByToEdit(prev => ({ ...prev, [field] : value }))
-    }
+    // function handleChange({target}){
+    //     let {name: field, value, type } = target
+    //     switch (type) {
+    //         case 'number':
+    //         case 'range' :
+    //             value = +value
+    //             break;
+    //         case 'checkbox':
+    //             value = target.checked
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    //     console.log('target:', target)
+    //     setFilterByToEdit(prev => ({ ...prev, [field] : value }))
+    // }
     return (
         <section className="starred">
-            <label htmlFor="starred"> Show Starred </label>
-            <input 
-                onChange={handleChange} 
-                value={filterByToEdit.isStarred} 
-                id="starred" 
-                name="isStarred" 
-                type="checkbox" 
-                onClick={handleChange} 
-            />
+            <Link to='/email/starred' className="starred"> Show Starred </Link>
+            
         </section>
     )
 }

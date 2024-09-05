@@ -5,23 +5,30 @@ import { EmailFilter } from "../cmps/EmailFilter"
 import { EmailList } from "../cmps/EmailsList"
 import { EmailFolderList } from "../cmps/EmailFolderList"
 import { useEffect, useRef, useState } from "react"
-import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom"
+import { Link, Outlet, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
 import { Starred } from "../cmps/Starred"
 import { getExistingProperties } from "../services/util.service"
 
 export function EmailIndex() {
+    const params = useParams()
+
     const navigate = useNavigate()
     const [emails, setEmails] = useState(null)
     const [counter, setCounter] = useState(null)
     const [searchParams, setSearchParams] = useSearchParams()  
-    const defaultFilter = emailService.getFilterFromSearchParams(searchParams)
-    const [filterBy, setFilterBy] = useState(defaultFilter)
+    const [filterBy, setFilterBy] = useState( emailService.getFilterFromSearchParams( searchParams, params.folder ))
     const [viewSelector, setViewSelector] = useState("All")
+    const saveFilterBeforeSwitchTab = useRef('')
 
 
     //TODO add the mobile resolution change
     //TODO fix checkbox filter params bug
+
+    useEffect(() => {
+        console.log('useEffect email index params.folder:', params.folder)
+        setFilterBy({ search: saveFilterBeforeSwitchTab.current , status: params.folder })
+    }, [ params.folder])
 
     useEffect(() => {
         setCounter( emailService.getUnreadCounter());
@@ -30,7 +37,7 @@ export function EmailIndex() {
     useEffect(() => {
         loadEmails()
         setSearchParams(getExistingProperties(filterBy))
-    }, [filterBy, viewSelector])
+    }, [filterBy, viewSelector ])
 
     async function loadEmails() {
         try {
@@ -108,18 +115,20 @@ export function EmailIndex() {
         } catch (err){
             showErrorMsg('error adding email:', err)
         }
-       
+    }
 
-
+    function saveFilterBeforeSwitchTabFunc(filterByParams){
+        console.log('filterByParams:', filterByParams.get('search') || '')
+        saveFilterBeforeSwitchTab.current = (filterByParams.get('search') || '')
     }
 
     if (!emails) return <span> email page loading.. </span>
-    const { search, isStarred } = filterBy
+    const { search, status } = filterBy
     return (
         <section className="email-index">
             <div className="search-container">
                 <EmailFilter filterBy={{ search }} onFilterBy={filterByFunc} />
-                <Starred filterBy={{ isStarred }} onFilterBy={filterByFunc}/>
+                <Starred filterBy={{ status }} onFilterBy={filterByFunc}/>
                 <div className="filter-container">
                     <EmailUnread viewSelector={viewFunc} />
                 </div>
@@ -134,7 +143,7 @@ export function EmailIndex() {
             </Link>
 
             <div className="email-folder-container">
-                <EmailFolderList unreadCounter={counter}/>
+                <EmailFolderList unreadCounter={counter} saveFilterBeforeSwitchTab={saveFilterBeforeSwitchTabFunc} />
             </div>
 
 

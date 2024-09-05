@@ -19,19 +19,28 @@ _createEmails()
 async function query(filterBy, viewSelector) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
-        let {search, isStarred} = filterBy
+        //two options: by text and by status.
+        let {status, search} = filterBy
         console.log('filterBy:', filterBy)
+        
+        switch (status){
+            case 'starred':
+                emails = emails.filter(email => ((email.isStarred)))
+                break;
+            case 'inbox':
+                emails = emails.filter(email => email.sender.toLowerCase().includes('AvinoamInc@gmail.com'.toLowerCase()))
+                break;
+            default:
+                break;
 
+        }
+       
         emails = emails.filter(email => 
             (email.subject.toLowerCase().includes(search.toLowerCase())
             || (email.sender.toLowerCase().includes(search.toLowerCase()))
             || (email.receiver.toLowerCase().includes(search.toLowerCase())))
         )
-        if ( isStarred === true){
-            emails = emails.filter(email => (
-                (email.isStarred === isStarred)
-            ))
-        }
+        console.log('filterBy:', filterBy)
     }
     if(viewSelector !== null && viewSelector !== "All"){
         console.log('viewSelector:', viewSelector)
@@ -111,8 +120,8 @@ function _createEmails() {
 
 function getDefaultFilter(){
     return {
-        search: '',
-        isStarred: null
+        status: 'inbox',
+        search: ''
     }
 }
 
@@ -127,11 +136,13 @@ function getUnreadCounter(){
     
 }
 
-function getFilterFromSearchParams(searchParams){
-    const defaultFilter = getDefaultFilter()
-    const filterBy ={}
-    for (const field in defaultFilter){
-        filterBy[field] = searchParams.get(field) || ''
+function getFilterFromSearchParams(searchParams, folder){
+    const filterBy = {
+        status: folder,
+        search: searchParams.get('search') || ''
+        // isRead: JSON.parse(searchParams.get('isRead')),
+        // isStarred: searchParams.get('isStarred') || null
+        // labels: searchParams.get('labels') || []
     }
 
     return filterBy
