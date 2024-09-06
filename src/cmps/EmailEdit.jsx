@@ -1,10 +1,18 @@
-import { useState } from "react"
-import { Link, useOutletContext } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { emailService } from "../services/emailService"
 
-export function EmailEdit(){
+export function EmailEdit({ onSaveEmail }){
+    const params = useParams()
+    const [searchParams, setSearchParams] = useSearchParams()  
     const [email, setEmail] = useState( emailService.createEmail())
-    const { onSaveEmail } = useOutletContext()
+
+    useEffect(() => {
+        const mailId = searchParams.get('compose')
+        if (mailId && mailId !== 'new') {
+            emailService.getById(mailId).then(setEmail)
+        }
+    }, [])
 
     function handleChange( {target }){
         let {name: field, value, type} = target
@@ -27,15 +35,14 @@ export function EmailEdit(){
 
     function onSubmitEmail( ev ){
         ev.preventDefault()
-        console.log('onSaveEmail:', onSaveEmail)
+        console.log('onSaveEmail:', email)
         onSaveEmail(email)
-        //TODO after the email is sent i want the unread counter to get +1 want to re-render (happens on refresh by query)
     }
 
     return (
         <section className="email-edit">
-            <Link to="/email">  <button className="close-btn"> X </button>   </Link>
-            <span> {email.id ? 'Edit' : 'Add'} Email </span>
+            <Link to={`/email/${ params.folder} `}>  <button className="close-btn"> X </button> </Link>
+            <span> {searchParams.get('compose') !== 'new' ? 'Edit' : 'Add'} Email </span>
             
             <form onSubmit={onSubmitEmail}>
                 <label htmlFor="receiver"> To:   </label>

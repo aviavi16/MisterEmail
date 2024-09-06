@@ -7,23 +7,21 @@ import { EmailFolderList } from "../cmps/EmailFolderList"
 import { useEffect, useRef, useState } from "react"
 import { Link, Outlet, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service"
-import { Starred } from "../cmps/Starred"
 import { getExistingProperties } from "../services/util.service"
+import { EmailEdit } from "../cmps/EmailEdit"
 
 export function EmailIndex() {
     const params = useParams()
 
-    const navigate = useNavigate()
     const [emails, setEmails] = useState(null)
     const [counter, setCounter] = useState(null)
     const [searchParams, setSearchParams] = useSearchParams()  
     const [filterBy, setFilterBy] = useState( emailService.getFilterFromSearchParams( searchParams, params.folder ))
     const [viewSelector, setViewSelector] = useState("All")
     const saveFilterBeforeSwitchTab = useRef('')
-
+    const navigate = useNavigate()
 
     //TODO add the mobile resolution change
-    //TODO fix checkbox filter params bug
 
     useEffect(() => {
         console.log('useEffect email index params.folder:', params.folder)
@@ -65,13 +63,20 @@ export function EmailIndex() {
 
     }
 
+    /**
+     * only in inbox if we click the change read/unread button (preview) the unread counter is changed accordingly 
+     * @param {*} isChanged 
+     */
     function onEmailRead(isChanged){
         try{
-            console.log('previewLoad:' , isChanged)
-            if(isChanged === false)
-                setCounter(prev => prev + 1)
-            if(isChanged === true)
-                setCounter(prev => prev - 1)
+            if ( params.folder === 'inbox'){
+                console.log('previewLoad:' , isChanged)
+                if(isChanged === false)
+                    setCounter(prev => prev + 1)
+                if(isChanged === true)
+                    setCounter(prev => prev - 1)
+            }
+           
         } catch (err) {
             console.log('err:', err)
             showErrorMsg("could not change counter email")
@@ -100,18 +105,21 @@ export function EmailIndex() {
 
     async function onSaveEmail(email){
         try{
-            console.log('email:', email)
             const emailToSave = await emailService.save(email)
             console.log('emailToSave:', emailToSave)
-
-            if (!email.id)
+            if (!email.id){
                 setEmails(emails => [...emails, emailToSave])
+                if ( emailToSave.receiver.toLowerCase().includes('avinoam')){
+                    setCounter(prev => prev + 1)
+                }
+                    
+            }
             else
                 setEmails(emails => emails.map(
                     _email => _email.id === emailToSave.id ? emailToSave : _email
                 ))
             showSuccessMsg(`Email (${emailToSave.id}) saved`)
-            navigate('/email')
+            navigate(`/email/${ params.folder }`)
         } catch (err){
             showErrorMsg('error adding email:', err)
         }
@@ -122,22 +130,23 @@ export function EmailIndex() {
         saveFilterBeforeSwitchTab.current = (filterByParams.get('search') || '')
     }
 
-    if (!emails) return <span> email page loading.. </span>
+    const isComposeOpen = Boolean(searchParams.get('compose'))
+    if (!params.mailId && !emails) return <span> email page loading.. </span>
     const { search, status } = filterBy
     return (
         <section className="email-index">
             <div className="search-container">
                 <EmailFilter filterBy={{ search }} onFilterBy={filterByFunc} />
-                <Starred filterBy={{ status }} onFilterBy={filterByFunc}/>
-                <div className="filter-container">
+                {!params.mailId && (<div className="filter-container">
                     <EmailUnread viewSelector={viewFunc} />
-                </div>
+                </div>)}
             </div>
-            <div className="list-container">
+            {!params.mailId && (<div className="list-container">
                 <EmailList emails= {emails} onRemove= {removeEmail} onRead= {onEmailRead} />
-            </div>
+            </div>)}
 
-            <Link to='/email/edit' className="compose-container">
+            <Link to={`/email/${ params.folder }?compose=new`} className="compose-container" > 
+            
                 <img src={composeLogo} />
                 <span className="email-compose"> Compose </span>         
             </Link>
@@ -145,9 +154,8 @@ export function EmailIndex() {
             <div className="email-folder-container">
                 <EmailFolderList unreadCounter={counter} saveFilterBeforeSwitchTab={saveFilterBeforeSwitchTabFunc} />
             </div>
-
-
-            <Outlet context={ {onSaveEmail }}/>     
+            {params.mailId && <Outlet />}
+            {isComposeOpen && <EmailEdit  onSaveEmail= { onSaveEmail}/> }
 
         </section>
     )

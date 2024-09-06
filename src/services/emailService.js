@@ -28,7 +28,7 @@ async function query(filterBy, viewSelector) {
                 emails = emails.filter(email => ((email.isStarred)))
                 break;
             case 'inbox':
-                emails = emails.filter(email => email.sender.toLowerCase().includes('AvinoamInc@gmail.com'.toLowerCase()))
+                emails = emails.filter(email => email.receiver.toLowerCase().includes('Avinoam'.toLowerCase()))
                 break;
             default:
                 break;
@@ -129,7 +129,7 @@ function getUnreadCounter(){
     let emails = utilService.loadFromStorage(STORAGE_KEY)
     if(!emails) return 0
     emails = emails.filter(mail => 
-        mail.isRead === false)
+        mail.isRead === false && mail.receiver.includes('avinoam'))
      
         console.log('emails.length :', emails.length )
     return emails.length

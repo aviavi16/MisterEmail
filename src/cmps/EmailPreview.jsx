@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { json, Link } from "react-router-dom"
+import { json, Link, useParams } from "react-router-dom"
 import { emailService } from "../services/emailService"
 import  deleteIcon  from "../assets/imgs/delete.png"
 import unreadIcon  from "../assets/imgs/unread-message.png"
@@ -10,6 +10,7 @@ export function EmailPreview({email , onRemove, onRead }){
     const [read, setRead] = useState(email.isRead)
     const [starred, setStarred] = useState(email.isStar)
     const isMounted = useRef(false);
+    const params = useParams()
 
     useEffect (() => {
         console.log('EmailPreview useEffect read:', read)
@@ -55,7 +56,7 @@ export function EmailPreview({email , onRemove, onRead }){
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
                    {/* the sender must have @ in it's address!! */}
                    <div className="from-email"> { email.sender ? email.sender.toString().split("@")[0] : ' '} </div>
-                   <Link to={`/email/${email.id}`} className="details-container">
+                   <Link to={`/email/${ params.folder }/${email.id}`} className="details-container">
                          <span className="test-container"> {email.isStar}! </span>
                          <span className="subject-container"> {email.subject}- </span>
                          <span className="body-container"> {email.body} </span>
@@ -70,7 +71,7 @@ export function EmailPreview({email , onRemove, onRead }){
                    <div className="extra-action-btn">
                         <button onClick={toggleUnread} className="is-read-btn"> Read/Unread </button>             
                         <button onClick={() => onRemove(email.id)} className="remove-btn"> X </button> 
-                        <Link to={`/email/edit/${email.id}`}> Edit </Link>
+                        <Link to={`/email/${ params.folder }?compose=${email.id}`}> Edit </Link>
                    </div>
                           
         </section>
