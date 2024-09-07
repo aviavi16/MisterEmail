@@ -6,11 +6,12 @@ import unreadIcon  from "../assets/imgs/unread-message.png"
 import fullStarIcon  from "../assets/imgs/full-star.png"
 import emptyStarIcon  from "../assets/imgs/empty-star.png"
 
-export function EmailPreview({email , onRemove, onRead }){
+export function EmailPreview({email , onRemove, onRead , onRestore}){
     const [read, setRead] = useState(email.isRead)
     const [starred, setStarred] = useState(email.isStar)
     const isMounted = useRef(false);
     const params = useParams()
+    let senderField = ''
 
     useEffect (() => {
         console.log('EmailPreview useEffect read:', read)
@@ -46,6 +47,11 @@ export function EmailPreview({email , onRemove, onRead }){
         setStarred(starred => !starred)
     }
 
+    function getFromField(){
+        senderField =  params.folder === 'sent' ? 'TO: ' + email.receiver : email.sender 
+        return  senderField ? senderField.toString().split("@")[0] : ' '
+    }
+
     return(
         <section className={rowStyle()}>
                     <input className="checkbox" title="Select" type="checkbox" />   
@@ -55,7 +61,7 @@ export function EmailPreview({email , onRemove, onRead }){
                    
                    {/* <div className="checkbox-important-btn"> <button /> </div> */}
                    {/* the sender must have @ in it's address!! */}
-                   <div className="from-email"> { email.sender ? email.sender.toString().split("@")[0] : ' '} </div>
+                   <div className="from-email"> { getFromField() } </div>
                    <Link to={`/email/${ params.folder }/${email.id}`} className="details-container">
                          <span className="test-container"> {email.isStar}! </span>
                          <span className="subject-container"> {email.subject}- </span>
@@ -71,6 +77,7 @@ export function EmailPreview({email , onRemove, onRead }){
                    <div className="extra-action-btn">
                         <button onClick={toggleUnread} className="is-read-btn"> Read/Unread </button>             
                         <button onClick={() => onRemove(email.id)} className="remove-btn"> X </button> 
+                        { params.folder === 'trash' && (<button onClick={() => onRestore(email.id)} className="restore-btn"> Restore </button>)} 
                         <Link to={`/email/${ params.folder }?compose=${email.id}`}> Edit </Link>
                    </div>
                           

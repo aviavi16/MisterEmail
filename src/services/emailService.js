@@ -9,7 +9,10 @@ export const emailService = {
     createEmail,
     getDefaultFilter,
     getUnreadCounter,
-    getFilterFromSearchParams
+    getFilterFromSearchParams,
+    moveToTrash,
+    getUnreadById, 
+    restore
 }
 
 const STORAGE_KEY = "emails"
@@ -25,10 +28,19 @@ async function query(filterBy, viewSelector) {
         
         switch (status){
             case 'starred':
-                emails = emails.filter(email => ((email.isStarred)))
+                emails = emails.filter(email => email.isStarred && !email.removedAt && email.sentAt)
                 break;
             case 'inbox':
-                emails = emails.filter(email => email.receiver.toLowerCase().includes('Avinoam'.toLowerCase()))
+                emails = emails.filter(email => email.receiver.toLowerCase().includes('Avinoam'.toLowerCase()) && !email.removedAt&& email.sentAt)
+                break;
+            case 'sent':
+                emails = emails.filter(email => email.sender.toLowerCase().includes('Avinoam'.toLowerCase()) && !email.removedAt && email.sentAt)
+                break;
+            case 'trash':
+                emails = emails.filter(email => email.removedAt)
+                break;
+            case 'drafts':
+                emails = emails.filter(email => !email.sentAt && !email.removedAt)
                 break;
             default:
                 break;
@@ -129,7 +141,8 @@ function getUnreadCounter(){
     let emails = utilService.loadFromStorage(STORAGE_KEY)
     if(!emails) return 0
     emails = emails.filter(mail => 
-        mail.isRead === false && mail.receiver.includes('avinoam'))
+        mail.isRead === false && mail.receiver.includes('avinoam')
+        && !mail.removedAt )
      
         console.log('emails.length :', emails.length )
     return emails.length
@@ -148,4 +161,23 @@ function getFilterFromSearchParams(searchParams, folder){
     return filterBy
 }
 
+async function moveToTrash(id){
+    
+    const emailToSave = await getById(id).then()
+    console.log('move to trash:', emailToSave)
+    emailToSave.removedAt = true
+    storageService.put(STORAGE_KEY, emailToSave)
+}
+
+async function restore(id){
+    const emailToSave = await getById(id).then()
+    console.log('restored:', emailToSave)
+    emailToSave.removedAt = null
+    storageService.put(STORAGE_KEY, emailToSave)
+}
+
+async function getUnreadById(id){
+    const email = await getById(id).then()
+    return email.isRead
+}
 

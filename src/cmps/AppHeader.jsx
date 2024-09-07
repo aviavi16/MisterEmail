@@ -13,7 +13,7 @@ export function AppHeader(){
                     <h1> Mister Email </h1>
                 </div>
                     <nav>
-                        <NavLink to='/email'> <img src={emailIcon} title="email" className="email-link"/> </NavLink>
+                        <NavLink to='/email/folder'> <img src={emailIcon} title="email" className="email-link"/> </NavLink>
                         <NavLink to='/about'>  <img src={aboutIcon} title="about" className="about-link"/> </NavLink>
                         <NavLink to='/settings'> <img src={settingsIcon} title="settings" className="settings-link"/> </NavLink>
                         <NavLink to='/'>   <img src={homeIcon} title="home" className="home-link"/> </NavLink>

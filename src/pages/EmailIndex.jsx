@@ -50,12 +50,32 @@ export function EmailIndex() {
 
     async function removeEmail(emailId) { 
         try {
-            //TODO add email unread count using the service
-            if (!confirm('Are you sure?')) return
-            console.log('removing the emailId:', emailId)
-            await emailService.remove(emailId)
-            setEmails(emails => emails.filter(email => email.id !== emailId))
-            showSuccessMsg(`Email (${emailId}) removed`)
+            if ( params.folder !== 'trash'){
+                if (!confirm('Do you want to move the email to trash?')) return
+                console.log('move the email to trash:', emailId)
+                
+                //if the email unread and we delete the email from inbox the counter decrease (function?)
+                if ( params.folder === 'inbox'){
+                    const _isRead = await emailService.getUnreadById(emailId)
+
+                    if(_isRead === false){
+                        console.log('moved to trash unread email, counter was decreased ')
+                        setCounter(prev => prev - 1)
+                    }
+                        
+                }
+
+                emailService.moveToTrash(emailId)
+                setEmails(emails => emails.filter(email => email.id !== emailId))
+                showSuccessMsg(`Email (${emailId}) moved to trash`)
+            } 
+            else {
+                if (!confirm('Are you sure? This action will DELETE this email FOREVER!')) return
+                console.log('removing the emailId:', emailId)
+                await emailService.remove(emailId)
+                setEmails(emails => emails.filter(email => email.id !== emailId))
+                showSuccessMsg(`Email (${emailId}) removed FOREVER!`)
+            }                    
         } catch (err) {
             console.log('err:', err)
             showErrorMsg("could not remove email")
@@ -130,6 +150,30 @@ export function EmailIndex() {
         saveFilterBeforeSwitchTab.current = (filterByParams.get('search') || '')
     }
 
+    async function onRestoreFunc(emailId) { 
+        try {
+            if (!confirm('Do you want to restore the email?')) return
+            console.log('move the email to inbox:', emailId)
+            
+            //if the email unread the counter increase (function?)
+            const _isRead = await emailService.getUnreadById(emailId)
+
+            if(_isRead === false){
+                console.log('moved to inbox unread email, counter was increased ')
+                setCounter(prev => prev + 1)
+            }
+                        
+                
+
+            emailService.restore(emailId)
+            setEmails(emails => emails.filter(email => email.id !== emailId))
+            showSuccessMsg(`Email (${emailId}) restored`)
+        } catch (err) {
+            console.log('err:', err)
+            showErrorMsg("could not restore email")
+        }
+    }
+
     const isComposeOpen = Boolean(searchParams.get('compose'))
     if (!params.mailId && !emails) return <span> email page loading.. </span>
     const { search, status } = filterBy
@@ -142,7 +186,7 @@ export function EmailIndex() {
                 </div>)}
             </div>
             {!params.mailId && (<div className="list-container">
-                <EmailList emails= {emails} onRemove= {removeEmail} onRead= {onEmailRead} />
+                <EmailList emails= {emails} onRemove= {removeEmail} onRead= {onEmailRead} onRestore= { onRestoreFunc}/>
             </div>)}
 
             <Link to={`/email/${ params.folder }?compose=new`} className="compose-container" > 

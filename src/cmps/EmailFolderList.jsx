@@ -25,20 +25,20 @@ export function EmailFolderList({unreadCounter, saveFilterBeforeSwitchTab}){
                 <span className="show-container"> Starred </span>
             </Link>
 
-            <div className="sent-container">
+            <Link onClick={() => saveFilterBeforeSwitchTab(searchParams)} to='/email/sent' className="sent-container">
                 <img src={sentLogo} />
                 <span className="show-container"> Sent </span>
-            </div>
+            </Link>
 
-            <div className="draft-container">
+            <Link onClick={() => saveFilterBeforeSwitchTab(searchParams)} to='/email/drafts' className="drafts-container">  
                 <img src={draftLogo} />
                 <span className="show-container"> Draft </span>
-            </div>
+            </Link>
 
-            <div className="trash-container">
+            <Link onClick={() => saveFilterBeforeSwitchTab(searchParams)} to='/email/trash' className="trash-container">  
                 <img src={trashLogo} />
                 <span className="show-container"> Trash </span>
-            </div>
+            </Link>
 
             
                     

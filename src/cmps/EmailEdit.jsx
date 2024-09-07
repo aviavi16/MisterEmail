@@ -7,6 +7,9 @@ export function EmailEdit({ onSaveEmail }){
     const [searchParams, setSearchParams] = useSearchParams()  
     const [email, setEmail] = useState( emailService.createEmail())
 
+
+    //TODO add minimize, normal and fullscreen
+
     useEffect(() => {
         const mailId = searchParams.get('compose')
         if (mailId && mailId !== 'new') {

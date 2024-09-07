@@ -1,4 +1,4 @@
-.inbox-container, .starred-container, .draft-container, .trash-container, .sent-container{
+.inbox-container, .starred-container, .drafts-container, .trash-container, .sent-container{
     display: flex;
     gap: 15px;
     flex-direction: row;
