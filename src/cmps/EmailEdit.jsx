@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { emailService } from "../services/emailService"
+import { debounce } from "../services/util.service"
 
 export function EmailEdit({ onSaveEmail }){
     const params = useParams()
     const [searchParams, setSearchParams] = useSearchParams()  
     const [email, setEmail] = useState( emailService.createEmail())
     const [viewState, setViewState] = useState('normal') // 'full-screen' or 'minimize'
+    const onSaveDraftByDebounce = useRef( debounce( onSaveDraft, 400)).current
 
     useEffect(() => {
         const mailId = searchParams.get('compose')
@@ -30,7 +32,11 @@ export function EmailEdit({ onSaveEmail }){
         }
         console.log('value:', value)
         setEmail( prevEmail => ({ ...prevEmail, [field]: value }))
-
+        console.log('email:', email)
+        if (!email.sentAt ){
+            
+            onSaveDraftByDebounce(email)
+        }
     }
 
     const { receiver , subject, body } = email
@@ -104,6 +110,11 @@ export function EmailEdit({ onSaveEmail }){
             </>
             
         ) 
+    }
+
+    function onSaveDraft(mailToDraft){
+        console.log('saving the email to drafts: ' , mailToDraft)
+        emailService.saveDraft(mailToDraft)
     }
 
     return (

@@ -32,3 +32,13 @@ export function getExistingProperties(obj){
     }
     return trueObj
 }
+
+export function debounce( func , time ){
+    let timeoutId
+    return ( ...args ) => {
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout( () => {
+            func( ...args)
+        }, time )
+    }
+}

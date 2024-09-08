@@ -21,6 +21,7 @@ export function EmailIndex() {
     const saveFilterBeforeSwitchTab = useRef('')
     const navigate = useNavigate()
 
+    //TODO validate compose
     //TODO add the mobile resolution change
 
     useEffect(() => {

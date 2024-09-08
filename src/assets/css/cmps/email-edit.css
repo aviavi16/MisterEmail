@@ -34,6 +34,9 @@
     width: 90%;
     bottom: 100px;
     left: 100px;
+    box-shadow:
+        0 0 0 100vmax black,
+        -3px 1px 28px black;
     form{
         display: flex;
         flex-direction: column;

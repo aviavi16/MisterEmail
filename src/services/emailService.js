@@ -12,7 +12,8 @@ export const emailService = {
     getFilterFromSearchParams,
     moveToTrash,
     getUnreadById, 
-    restore
+    restore,
+    saveDraft
 }
 
 const STORAGE_KEY = "emails"
@@ -31,7 +32,7 @@ async function query(filterBy, viewSelector) {
                 emails = emails.filter(email => email.isStarred && !email.removedAt && email.sentAt)
                 break;
             case 'inbox':
-                emails = emails.filter(email => email.receiver.toLowerCase().includes('Avinoam'.toLowerCase()) && !email.removedAt&& email.sentAt)
+                emails = emails.filter(email => (email.receiver ? email.receiver : ' ').toLowerCase().includes('Avinoam'.toLowerCase()) && !email.removedAt&& email.sentAt)
                 break;
             case 'sent':
                 emails = emails.filter(email => email.sender.toLowerCase().includes('Avinoam'.toLowerCase()) && !email.removedAt && email.sentAt)
@@ -48,9 +49,9 @@ async function query(filterBy, viewSelector) {
         }
        
         emails = emails.filter(email => 
-            (email.subject.toLowerCase().includes(search.toLowerCase())
+            ((email.subject ? email.subject : ' ').toLowerCase().includes(search.toLowerCase())
             || (email.sender.toLowerCase().includes(search.toLowerCase()))
-            || (email.receiver.toLowerCase().includes(search.toLowerCase())))
+            || ((email.receiver ? email.receiver : ' ').toLowerCase().includes(search.toLowerCase())))
         )
         console.log('filterBy:', filterBy)
     }
@@ -74,6 +75,7 @@ async function remove(id) {
 }
 
 async function save(emailToSave) {
+    emailToSave.sentAt = 'now'
     if (emailToSave.id){
 
         return storageService.put(STORAGE_KEY, emailToSave)
@@ -89,12 +91,12 @@ function createEmail(subject, body, receiver ) {
     return {
         id: null,
         sender : "avinoam@gmail.com",
-        receiver,
-        subject,
-        body,
+        receiver : ' ',
+        subject : ' ',
+        body : ' ',
         isRead: false,
         isStarred: false,
-        sentAt: "now",
+        sentAt: null,
         removedAt: null //for later use    
     }
 }
@@ -141,7 +143,7 @@ function getUnreadCounter(){
     let emails = utilService.loadFromStorage(STORAGE_KEY)
     if(!emails) return 0
     emails = emails.filter(mail => 
-        mail.isRead === false && mail.receiver.includes('avinoam')
+        mail.isRead === false && (mail.receiver ? mail.receiver : ' ').includes('avinoam')
         && !mail.removedAt )
      
         console.log('emails.length :', emails.length )
@@ -179,5 +181,22 @@ async function restore(id){
 async function getUnreadById(id){
     const email = await getById(id).then()
     return email.isRead
+}
+
+/**
+ * gets an email and saves to draft, if he already exists there updates the body / sender / subject
+ * @param {*} mail 
+ */
+function saveDraft(emailToSave){
+    console.log('saving: ')
+    if (emailToSave.id){
+
+        return storageService.put(STORAGE_KEY, emailToSave)
+    }
+    else{
+        emailToSave.id = utilService.makeId()
+        emailToSave.isRead = false
+        return storageService.post(STORAGE_KEY, emailToSave)
+    }
 }
 
