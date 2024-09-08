@@ -6,9 +6,7 @@ export function EmailEdit({ onSaveEmail }){
     const params = useParams()
     const [searchParams, setSearchParams] = useSearchParams()  
     const [email, setEmail] = useState( emailService.createEmail())
-
-
-    //TODO add minimize, normal and fullscreen
+    const [viewState, setViewState] = useState('normal') // 'full-screen' or 'minimize'
 
     useEffect(() => {
         const mailId = searchParams.get('compose')
@@ -34,6 +32,7 @@ export function EmailEdit({ onSaveEmail }){
         setEmail( prevEmail => ({ ...prevEmail, [field]: value }))
 
     }
+
     const { receiver , subject, body } = email
 
     function onSubmitEmail( ev ){
@@ -42,10 +41,94 @@ export function EmailEdit({ onSaveEmail }){
         onSaveEmail(email)
     }
 
+    function onChangeViewState(viewState , ev) {
+        if (ev) ev.stopPropagation()
+        setViewState(viewState)
+    }
+
+    function onToggleView(view1, view2, ev){
+        if (ev) ev.stopPropagation()
+        setViewState(view1 === viewState ? view2 : view1)
+    }
+
+    function onToggleIcon(viewToChange, isChangeState, ev){
+        if (ev) ev.stopPropagation()
+
+        let miniVar = ''
+        let iconText1 = 'add'
+        let iconText2 = 'open_in_full'
+        let view1 = ''
+        let view2 = ''
+        console.log('we need to chage view to: viewToChange', viewToChange)
+        
+        switch (viewToChange){
+            case 'minimize':
+                miniVar = 'mini-icon'
+                iconText1 = 'add'
+                iconText2 = 'open_in_full'
+                view1 = 'normal'
+                view2 = 'full-screen'
+                break;
+            case 'normal':
+                iconText1 = 'minimize'
+                iconText2 = 'open_in_full'
+                view1 = 'minimize'
+                view2 = 'full-screen'
+                break;
+            case 'full-screen':
+                iconText1 = 'minimize'
+                iconText2 = 'close_fullscreen'
+                view1 = 'minimize'
+                view2 = 'normal'
+                break;
+            default:
+                console.log('error: this view is not supported yet', viewToChange)
+                break;
+        }
+        if( isChangeState)
+            setViewState(viewToChange)
+
+        return  (
+            <>
+                <span
+                    onClick={(ev) => onToggleIcon(view1, true,  ev)}
+                    className={`material-symbols-outlined ${miniVar}`}>
+                    {iconText1}
+                </span>
+                <span
+                    onClick={(ev) => onToggleIcon(view2, true, ev)}
+                    className='material-symbols-outlined'
+                >
+                    {iconText2}
+                </span>
+            </>
+            
+        ) 
+    }
+
     return (
-        <section className="email-edit">
-            <Link to={`/email/${ params.folder} `}>  <button className="close-btn"> X </button> </Link>
-            <span> {searchParams.get('compose') !== 'new' ? 'Edit' : 'Add'} Email </span>
+        <>
+        <section className={ `${viewState} email-edit` }>
+            { viewState === 'minimize' && (<span> Draft </span>)}
+            <header
+                onClick={() => {
+                    onToggleView('minimize','normal')
+                }}>
+
+                <h4>New Message</h4>
+                <div className='icon-container'>
+                { onToggleIcon(viewState, false )}
+
+                    <Link
+                        to={`/email/${params.folder}`}
+                        className='material-symbols-outlined'
+                    >
+                        close
+                    </Link>
+                </div>
+            </header>
+
+            <span className="sub-title"> {searchParams.get('compose') !== 'new' ? 'Edit' : 'Add'} Email </span>
             
             <form onSubmit={onSubmitEmail}>
                 <label htmlFor="receiver"> To:   </label>
@@ -64,5 +147,13 @@ export function EmailEdit({ onSaveEmail }){
             </form>
 
         </section>
+
+        {viewState === 'full-screen' && (
+                <div
+                    className='close-modal-screen'
+                    onClick={() => onChangeViewState('normal')}
+                > Close Full Screen  </div>
+            )}
+        </>
     )
 }

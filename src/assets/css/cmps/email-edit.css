@@ -3,25 +3,51 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: 400px;
-    aspect-ratio: 1;
     position: fixed;
-    bottom: 0;
-    right: 0; 
-    box-shadow: 
-        0 0 0 100vmax black,
-        -3px 1px 28px black;
+
     padding: 50px;
     background-color: white;
     border: solid 3px lightcyan;
     border-radius: 10px;
+    aspect-ratio: 1;
 }
-.email-edit .close-btn{
-    position: absolute;
+.email-edit.normal{
+    position: fixed;
+    height: 400px;
+    bottom: 0;
+    right: 0; 
+    form{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.email-edit.normal .close-btn{
+    position: fixed;
     top: 2em;
     right: 2em;
 }
-.email-edit form{
-    display: flex;
-    flex-direction: column;
+
+.email-edit.full-screen {
+    position: fixed;
+    height: 80%;
+    width: 90%;
+    bottom: 100px;
+    left: 100px;
+    form{
+        display: flex;
+        flex-direction: column;
+    }
 }
+.email-edit.minimize{
+    position: fixed;
+    height: 100px;
+    width: 400px;
+    bottom: 0;
+    right: 0; 
+}
+
+.email-edit.minimize h4, .email-edit.minimize form, .sub-title{
+    display: none;
+}
+
