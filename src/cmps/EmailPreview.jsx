@@ -63,7 +63,6 @@ export function EmailPreview({email , onRemove, onRead , onRestore}){
                    {/* the sender must have @ in it's address!! */}
                    <div className="from-email"> { getFromField() } </div>
                    <Link to={`/email/${ params.folder }/${email.id}`} className="details-container">
-                         <span className="test-container"> {email.isStar}! </span>
                          <span className="subject-container"> {email.subject}- </span>
                          <span className="body-container"> {email.body} </span>
                     </Link> 

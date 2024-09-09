@@ -1,6 +1,6 @@
 .email-preview{
     display: grid;
-    grid-template-columns: repeat(2,0.1fr) 0.7fr 4fr 0.7fr 0.5fr;
+    grid-template-columns: 8fr 0.5fr;
     grid-template-rows: 35px;
     gap: 15px;
     background-color: white;
@@ -33,14 +33,6 @@
     justify-content: end;
 }
 
-.email-preview:hover .hide {
-    display: grid;
-}
-
-.email-preview:hover .date {
-    display: none;
-}
-
 .date-container .hide {
     display: none;
     width: 20px;
@@ -48,23 +40,26 @@
 }
 
 .action-btn{
+    display: none;
     display: flex;
     gap: 1em;
 }
 
 .extra-action-btn{
-    display: flex;
+    display: none;
     gap: 1em;
     max-height: 20px;
 }
 
 .remove-btn{
+    display: none;
     background-color: red;
     color: white;
     font-family: 'Courier New', Courier, monospace;
 }
 
 .is-read-btn{
+    display: none;
     background-color: lightcyan;
     font-family: Comic Sans MS;
 
@@ -82,4 +77,113 @@
 .body-container{
 
     overflow: hidden;
+}
+
+img{
+    width: 20px;
+}
+
+.star-container{
+    grid-area: 1 / 2;
+    align-self: end;
+}
+
+.checkbox{
+    display: none;
+}
+
+@media screen and (min-width : 922px) {
+    .email-preview{
+        display: grid;
+        grid-template-columns: repeat(2,0.1fr) 0.7fr 4fr 0.7fr 0.5fr;
+        grid-template-rows: 35px;
+        gap: 15px;
+        background-color: white;
+        cursor:pointer;
+        justify-content: start;
+        align-items: center;
+        color: darkblue;
+        font-weight: bold;
+        font-family: monospace;
+        border-bottom: 0.1px solid rgb(149, 193, 223);
+        padding-inline: 10px;
+    }
+    
+    .email-preview.dark{
+        background-color: lightgoldenrodyellow;
+        color: cadetblue;
+        cursor: pointer;
+    }
+    
+    .checkbox{
+        cursor:pointer;
+    }
+    
+    .checkbox :checked{
+        cursor:pointer;
+    }
+    
+    .date-container{
+        display: grid;
+        justify-content: end;
+
+    }
+    
+    .email-preview:hover .hide {
+        display: grid;
+    }
+    
+    .email-preview:hover .date {
+        display: none;
+    }
+    
+    .date-container .hide {
+        display: none;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .action-btn{
+        display: flex;
+        gap: 1em;
+    }
+    
+    .extra-action-btn{
+        display: flex;
+        gap: 1em;
+        max-height: 20px;
+    }
+    
+    .remove-btn{
+        display: flex;
+        background-color: red;
+        color: white;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    
+    .is-read-btn{
+        display: flex;
+        background-color: lightcyan;
+        font-family: Comic Sans MS;
+    
+    }
+    
+    .full-star{
+        display: none;
+        width: 20px;
+        height: 20px;
+    }
+    .from-email{
+        overflow: hidden;
+        overflow-y: hidden;
+    }
+    .body-container{
+    
+        overflow: hidden;
+    }
+
+    .checkbox{
+        display: block;
+    }
+    
 }
