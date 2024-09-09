@@ -185,7 +185,7 @@ export function EmailIndex() {
         <section className="email-index">
             <div className="search-container">
                 <EmailFilter filterBy={{ search }} onFilterBy={filterByFunc} />
-                {!params.mailId && (<div className="filter-container">
+                {!params.mailId && (<div className="filter-unread-container">
                     <EmailUnread viewSelector={viewFunc} />
                 </div>)}
             </div>

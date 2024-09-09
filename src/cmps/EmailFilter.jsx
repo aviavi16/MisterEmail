@@ -24,8 +24,16 @@ export function EmailFilter({ filterBy, onFilterBy}){
         setFilterByEdit(prev => ({ ...prev, [field] : value }))
     }
 
+    function openMenu(){
+        const emailFolderEl = document.querySelector('.email-folder-container')
+        emailFolderEl.className = 'email-folder-mini' 
+    }
+
     return(
         <section className="email-filter">
+            <div className="material-symbols-outlined" id='mini-menu-container' onClick={ openMenu }>              
+                menu
+            </div>
             <div className="filter-container">
                 <img src={searchIcon} htmlFor="search" className="search-link"/>
                 <input 

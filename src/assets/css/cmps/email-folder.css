@@ -3,5 +3,11 @@
     gap: 15px;
     flex-direction: row;
     margin-inline: 15px;
+    cursor: pointer;
 
+}
+
+#mini-menu-close{
+    display: none;
+    cursor: pointer;
 }
