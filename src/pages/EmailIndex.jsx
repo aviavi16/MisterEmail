@@ -25,7 +25,9 @@ export function EmailIndex() {
     //TODO sort
     //TODO fix draft issues
     //TODO validate compose
-    //TODO add the mobile resolution change
+    //TODO fix starred bug. (change the counter functionaliy)
+    //TODO change the func names.
+    //TODO change include avinoam to match and change in prev to check for that user
 
     useEffect(() => {
         console.log('useEffect email index params.folder:', params.folder)
@@ -93,6 +95,7 @@ export function EmailIndex() {
      */
     function onEmailRead(isChanged){
         try{
+            //star ****************
             if ( params.folder === 'inbox'){
                 console.log('previewLoad:' , isChanged)
                 if(isChanged === false)
